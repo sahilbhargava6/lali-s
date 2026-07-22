@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --aged-paper: #EDE6D6;
+    --iron: #2B2B28;
+    --oxide-red: #8C3B2E;
+    --brass: #B9924C;
+    --slate: #4A4F52;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Neumorphism Utilities for Dark & Light Iron Surfaces */
+.neo-dark {
+  background: #2B2B28;
+  box-shadow:  6px 6px 16px #1d1d1b, 
+              -6px -6px 16px #393935;
+}
+
+.neo-dark-inset {
+  background: #2B2B28;
+  box-shadow: inset 4px 4px 10px #1c1c1a, 
+              inset -4px -4px 10px #3a3a36;
+}
+
+.neo-dark-sm {
+  background: #2B2B28;
+  box-shadow:  3px 3px 8px #1e1e1c, 
+              -3px -3px 8px #383834;
+}
+
+.neo-paper {
+  background: #EDE6D6;
+  box-shadow:  8px 8px 20px #c9c3b6, 
+              -8px -8px 20px #ffffff;
+}
+
+.neo-oxide-red {
+  background: #8C3B2E;
+  box-shadow:  4px 4px 12px #632920, 
+              -4px -4px 12px #b54d3c;
+}
+
+.neo-brass-glow {
+  box-shadow: 0 0 15px rgba(185, 146, 76, 0.25);
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2B2B28;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8C3B2E;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B9924C;
 }
