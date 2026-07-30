@@ -2,47 +2,47 @@
 
 @layer base {
   :root {
-    --aged-paper: #EDE6D6;
-    --iron: #2B2B28;
-    --oxide-red: #8C3B2E;
-    --brass: #B9924C;
-    --slate: #4A4F52;
+    --aged-paper: #ffffff;
+    --iron: #111111;
+    --oxide-red: #D22027;
+    --brass: #FFC000;
+    --slate: #555555;
   }
 }
 
 /* Custom Neumorphism Utilities for Dark & Light Iron Surfaces */
 .neo-dark {
-  background: #2B2B28;
-  box-shadow:  6px 6px 16px #1d1d1b, 
-              -6px -6px 16px #393935;
+  background: #111111;
+  box-shadow:  6px 6px 16px #070707, 
+              -6px -6px 16px #1b1b1b;
 }
 
 .neo-dark-inset {
-  background: #2B2B28;
-  box-shadow: inset 4px 4px 10px #1c1c1a, 
-              inset -4px -4px 10px #3a3a36;
+  background: #111111;
+  box-shadow: inset 4px 4px 10px #070707, 
+              inset -4px -4px 10px #1b1b1b;
 }
 
 .neo-dark-sm {
-  background: #2B2B28;
-  box-shadow:  3px 3px 8px #1e1e1c, 
-              -3px -3px 8px #383834;
+  background: #111111;
+  box-shadow:  3px 3px 8px #070707, 
+              -3px -3px 8px #1b1b1b;
 }
 
 .neo-paper {
-  background: #EDE6D6;
-  box-shadow:  8px 8px 20px #c9c3b6, 
+  background: #ffffff;
+  box-shadow:  8px 8px 20px #d9d9d9, 
               -8px -8px 20px #ffffff;
 }
 
 .neo-oxide-red {
-  background: #8C3B2E;
-  box-shadow:  4px 4px 12px #632920, 
-              -4px -4px 12px #b54d3c;
+  background: #D22027;
+  box-shadow:  4px 4px 12px #9e181d, 
+              -4px -4px 12px #ff2831;
 }
 
 .neo-brass-glow {
-  box-shadow: 0 0 15px rgba(185, 146, 76, 0.25);
+  box-shadow: 0 0 15px rgba(255, 192, 0, 0.4);
 }
 
 @keyframes marquee {
@@ -66,14 +66,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #2B2B28;
+  background: #111111;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8C3B2E;
+  background: #D22027;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B9924C;
+  background: #FFC000;
 }

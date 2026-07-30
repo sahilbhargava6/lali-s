@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -15,9 +18,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Lali's BuildMart | Heritage Hardware, Tools, Modular Kitchens & Wholesale",
-  description: "Lali's BuildMart is a 100+ year old Hardware, Paint, Pipes & Sanitary, Plywood, Modular Kitchens & Electrical Retailer & Wholesaler. Specializing in bulk construction projects.",
-  keywords: ["Hardware Shop", "Wholesale Hardware", "Bosch Tools", "Asian Paints", "Modular Kitchens", "Hettich", "Fevicol", "Plywood", "Sanitaryware"],
+  title: "Lali's BuildMart | Construction Materials & Wholesale",
+  description: "Lali's BuildMart is a trusted building materials supplier in Dharamshala, providing quality products to contractors, builders, developers, institutions, and homeowners since 1924.",
+  keywords: ["Construction Materials", "Bulk Supply", "Wholesale Hardware", "Paints Dharamshala", "Modular Kitchens", "Building Partner"],
 };
 
 export default function RootLayout({
@@ -27,8 +30,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${playfair.variable} ${plusJakarta.variable} font-sans bg-[#EDE6D6] text-[#2B2B28] antialiased selection:bg-[#8C3B2E] selection:text-[#EDE6D6]`}>
-        {children}
+      <body className={`${playfair.variable} ${plusJakarta.variable} font-sans bg-slate-50 text-slate-900 antialiased selection:bg-[#D22027] selection:text-white`}>
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
+        <FloatingWhatsApp />
       </body>
     </html>
   );
