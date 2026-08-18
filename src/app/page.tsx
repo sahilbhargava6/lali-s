@@ -37,137 +37,200 @@ export default function Home() {
          </div>
 
          <div className="max-w-7xl mx-auto w-full relative z-20 flex-1 flex flex-col">
-            {/* Headline Overlay */}
-            <div className="mt-8 md:mt-12 bg-white/95 backdrop-blur-md p-6 md:p-8 rounded-[2rem] max-w-lg shadow-2xl border border-white/50 relative z-30">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#111111] rounded-full mb-4">
-                  <Award className="w-3 h-3 text-yellow-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-yellow-400">100+ Years of Excellence</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl font-black leading-[1.1] tracking-tight text-[#111111]">
-                    Mazboot Saaman, <br/>
-                    <span className="text-[#D22027]">Bharosemand Naam.</span>
-                </h1>
-                <p className="mt-4 text-gray-600 font-medium leading-relaxed text-sm md:text-base">
-                    We power your projects with dependable supply. Interact with the house model or explore our core material categories:
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {[
-                    "Plywood & Laminates",
-                    "Tools & Accessories",
-                    "Panels & Clads",
-                    "Waterproofing",
-                    "Electrical Supplies",
-                    "Paints & Coatings",
-                    "Plumbing & Sanitary",
-                    "Kitchens & Locks",
-                    "Flooring & Adhesives"
-                  ].map((catName, idx) => (
-                    <Link
-                      key={idx}
-                      href="/products"
-                      className="text-xs bg-slate-100 hover:bg-[#D22027] hover:text-white text-slate-700 px-3 py-1.5 rounded-full transition-all border border-slate-200/50 font-bold"
-                    >
-                      {catName}
-                    </Link>
-                  ))}
-                </div>
-                <div className="mt-6 flex gap-3">
-                  <Link href="/products" className="bg-[#111111] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#D22027] transition-colors">
-                    View Catalog
-                  </Link>
-                </div>
-            </div>
-            
-            {/* Interactive Canvas Area */}
-            <div className="absolute inset-0 w-full h-full pointer-events-none">
-              
-              {/* Hotspot 1: Roof */}
-              <div className="absolute top-[20%] left-[45%] md:left-[55%] pointer-events-auto group z-20">
-                <div className="relative w-12 h-12">
-                   <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75"></div>
-                   <div className="relative w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
-                     <Paintbrush className="w-5 h-5 text-[#111111]" />
-                   </div>
-                   
-                   {/* Popover */}
-                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="font-bold text-[#111111] mb-1">Paints & Coatings</div>
-                      <p className="text-xs text-gray-500 mb-3">Top brands like Dulux, Asian Paints & Indigo for exterior & interior.</p>
-                      <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
-                   </div>
-                </div>
-              </div>
+             {/* Headline Overlay */}
+             <div className="mt-8 md:mt-12 bg-white/95 backdrop-blur-md p-5 md:p-6 rounded-[2rem] max-w-lg shadow-2xl border border-white/50 relative z-30">
+                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#111111] rounded-full mb-3">
+                   <Award className="w-3 h-3 text-yellow-400" />
+                   <span className="text-[10px] font-bold uppercase tracking-wider text-yellow-400">100+ Years of Excellence</span>
+                 </div>
+                 <h1 className="text-3xl md:text-4xl font-black leading-[1.1] tracking-tight text-[#111111]">
+                     Mazboot Saaman, <br/>
+                     <span className="text-[#D22027]">Bharosemand Naam.</span>
+                 </h1>
+                 <p className="mt-3 text-gray-600 font-semibold leading-relaxed text-xs md:text-sm">
+                     We power your projects with dependable supply. Interact with the house model or explore our core material categories:
+                 </p>
+                 <div className="mt-3 flex flex-wrap gap-1.5">
+                   {[
+                     "Plywood & Laminates",
+                     "Tools & Accessories",
+                     "Panels & Clads",
+                     "Waterproofing",
+                     "Electrical Supplies",
+                     "Paints & Coatings",
+                     "Plumbing & Sanitary",
+                     "Kitchens & Locks",
+                     "Flooring & Adhesives"
+                   ].map((catName, idx) => (
+                     <Link
+                       key={idx}
+                       href="/products"
+                       className="text-[11px] bg-slate-100 hover:bg-[#D22027] hover:text-white text-slate-700 px-2.5 py-1 rounded-full transition-all border border-slate-200/40 font-bold"
+                     >
+                       {catName}
+                     </Link>
+                   ))}
+                 </div>
+                 <div className="mt-4 flex gap-3">
+                   <Link href="/products" className="bg-[#111111] text-white px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-[#D22027] transition-colors">
+                     View Catalog
+                   </Link>
+                 </div>
+             </div>
+             
+             {/* Interactive Canvas Area */}
+             <div className="absolute inset-0 w-full h-full pointer-events-none">
+               
+               {/* Hotspot 1: Paints & Coatings */}
+               <div className="absolute top-[18%] left-[54%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75"></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Paintbrush className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Paints & Coatings</div>
+                       <p className="text-xs text-gray-500 mb-3">Premium paints and primers from Asian Paints, Dulux, and Birla Opus.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
 
-              {/* Hotspot 2: Windows / Kitchen */}
-              <div className="absolute top-[50%] left-[65%] md:left-[75%] pointer-events-auto group z-20">
-                <div className="relative w-12 h-12">
-                   <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.5s"}}></div>
-                   <div className="relative w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
-                     <Utensils className="w-5 h-5 text-[#111111]" />
-                   </div>
-                   {/* Popover */}
-                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="font-bold text-[#111111] mb-1">Kitchens & Hardware</div>
-                      <p className="text-xs text-gray-500 mb-3">Premium fittings from Hafele, Hettich & Yale digital locks.</p>
-                      <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
-                   </div>
-                </div>
-              </div>
+               {/* Hotspot 2: Panels & Clads */}
+               <div className="absolute top-[32%] left-[68%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.3s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <LayoutGrid className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Panels & Clads</div>
+                       <p className="text-xs text-gray-500 mb-3">Modern interior wall panels and beautiful exterior cladding selections.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
 
-              {/* Hotspot 3: Side Wall / Electrical */}
-              <div className="absolute top-[65%] left-[25%] md:left-[35%] pointer-events-auto group z-20">
-                <div className="relative w-12 h-12">
-                   <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1s"}}></div>
-                   <div className="relative w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
-                     <Zap className="w-5 h-5 text-[#111111]" />
-                   </div>
-                   {/* Popover */}
-                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="font-bold text-[#111111] mb-1">Electrical Supplies</div>
-                      <p className="text-xs text-gray-500 mb-3">Wires, switches, and heating solutions from GreatWhite & Racold.</p>
-                      <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
-                   </div>
-                </div>
-              </div>
+               {/* Hotspot 3: Waterproofing */}
+               <div className="absolute top-[26%] left-[82%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.6s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <ShieldAlert className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Waterproofing</div>
+                       <p className="text-xs text-gray-500 mb-3">Robust leak-proofing & dampness solutions by Dr. Fixit & Bostik.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
 
-              {/* Hotspot 4: Pipes / Bathroom */}
-              <div className="absolute top-[45%] left-[80%] md:left-[90%] pointer-events-auto group z-20 hidden md:block">
-                <div className="relative w-12 h-12">
-                   <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.5s"}}></div>
-                   <div className="relative w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
-                     <Droplets className="w-5 h-5 text-[#111111]" />
-                   </div>
-                   {/* Popover */}
-                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="font-bold text-[#111111] mb-1">Plumbing & Sanitary</div>
-                      <p className="text-xs text-gray-500 mb-3">Complete piping and sanitaryware from Geberit, Vectus & Hindware.</p>
-                      <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
-                   </div>
-                </div>
-              </div>
+               {/* Hotspot 4: Plumbing & Sanitary */}
+               <div className="absolute top-[44%] left-[78%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.9s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Droplets className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Plumbing & Sanitary</div>
+                       <p className="text-xs text-gray-500 mb-3">Complete piping, tanks & sanitaryware from Vectus, Supreme & Geberit.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
 
-              {/* Hotspot 5: Floor/Driveway */}
-              <div className="absolute top-[80%] left-[50%] md:left-[60%] pointer-events-auto group z-20">
-                <div className="relative w-12 h-12">
-                   <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.2s"}}></div>
-                   <div className="relative w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
-                     <LayoutGrid className="w-5 h-5 text-[#111111]" />
-                   </div>
-                   {/* Popover */}
-                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="font-bold text-[#111111] mb-1">Flooring & Adhesives</div>
-                      <p className="text-xs text-gray-500 mb-3">Action Tesa flooring and Fevicol/Roff tile adhesives.</p>
-                      <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
-                   </div>
-                </div>
-              </div>
-            </div>
+               {/* Hotspot 5: Kitchens & Locks */}
+               <div className="absolute top-[50%] left-[62%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.2s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Utensils className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Kitchens & Locks</div>
+                       <p className="text-xs text-gray-500 mb-3">Premium modular kitchen fittings from Hafele & Hettich, plus Yale locks.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
 
-            {/* Bottom Instruction Bar */}
-            <div className="mt-auto self-center md:self-start bg-black/60 backdrop-blur-md px-5 py-3 rounded-full flex items-center gap-3 border border-white/20 relative z-30 shadow-xl mb-4">
-               <Lightbulb className="w-4 h-4 text-yellow-400" />
-               <span className="text-[11px] md:text-xs font-bold text-white tracking-widest uppercase">Hover the 5 hotspots to explore services</span>
-            </div>
+               {/* Hotspot 6: Electrical Supplies */}
+               <div className="absolute top-[58%] left-[48%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.5s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Zap className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Electrical Supplies</div>
+                       <p className="text-xs text-gray-500 mb-3">House wiring, switches, sockets, and heating from GreatWhite & Racold.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
+
+               {/* Hotspot 7: Plywood & Laminates */}
+               <div className="absolute top-[62%] left-[88%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.4s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Layers className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Plywood & Laminates</div>
+                       <p className="text-xs text-gray-500 mb-3">Greenply, Greenpanel & Black Cobra plywoods and decorative veneers.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
+
+               {/* Hotspot 8: Tools & Accessories */}
+               <div className="absolute top-[72%] left-[72%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.8s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <Wrench className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Tools & Accessories</div>
+                       <p className="text-xs text-gray-500 mb-3">Power tools and accessories from Bosch, Dewalt, Stanley & Ingco.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
+
+               {/* Hotspot 9: Flooring & Adhesives */}
+               <div className="absolute top-[78%] left-[58%] pointer-events-auto group z-20">
+                 <div className="relative w-10 h-10">
+                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.1s"}}></div>
+                    <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
+                      <LayoutGrid className="w-4 h-4 text-[#111111]" />
+                    </div>
+                    {/* Popover */}
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                       <div className="font-bold text-[#111111] mb-1">Flooring & Adhesives</div>
+                       <p className="text-xs text-gray-500 mb-3">Action Tesa flooring and Fevicol/Roff tile adhesives.</p>
+                       <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
+                    </div>
+                 </div>
+               </div>
+             </div>
+
+             {/* Bottom Instruction Bar */}
+             <div className="mt-auto self-center md:self-start bg-black/60 backdrop-blur-md px-5 py-3 rounded-full flex items-center gap-3 border border-white/20 relative z-30 shadow-xl mb-4">
+                <Lightbulb className="w-4 h-4 text-yellow-400" />
+                <span className="text-[11px] md:text-xs font-bold text-white tracking-widest uppercase">Hover hotspots to explore services</span>
+             </div>
          </div>
       </section>
 
