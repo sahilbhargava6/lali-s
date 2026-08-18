@@ -38,7 +38,7 @@ export default function Home() {
 
          <div className="max-w-7xl mx-auto w-full relative z-20 flex-1 flex flex-col">
              {/* Headline Overlay */}
-             <div className="mt-6 md:mt-10 bg-white/95 backdrop-blur-md p-6 md:p-8 rounded-[2.5rem] max-w-lg shadow-2xl border border-white/60 relative z-30">
+             <div className="mt-6 md:mt-10 bg-white/95 backdrop-blur-md p-6 md:p-8 rounded-[2.5rem] max-w-lg shadow-2xl border border-white/60 relative z-30 lg:-ml-16 xl:-ml-28 transition-transform duration-300">
                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#111111] rounded-full mb-4">
                    <Award className="w-3.5 h-3.5 text-yellow-400" />
                    <span className="text-[10px] md:text-xs font-extrabold uppercase tracking-wider text-yellow-400">100+ Years of Excellence</span>
@@ -83,7 +83,7 @@ export default function Home() {
              <div className="absolute inset-0 w-full h-full pointer-events-none">
                
                {/* Hotspot 1: Paints & Coatings */}
-               <div className="absolute top-[16%] left-[58%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[16%] left-[48%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75"></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -99,14 +99,14 @@ export default function Home() {
                </div>
 
                {/* Hotspot 2: Panels & Clads */}
-               <div className="absolute top-[58%] left-[84%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[32%] left-[64%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.3s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
                       <LayoutGrid className="w-4 h-4 text-[#111111]" />
                     </div>
                     {/* Popover */}
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Panels & Clads</div>
                        <p className="text-xs text-gray-500 mb-3">Modern interior wall panels and beautiful exterior cladding selections.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
@@ -131,7 +131,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 4: Plumbing & Sanitary */}
-               <div className="absolute top-[38%] left-[76%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[42%] left-[74%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.9s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -147,7 +147,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 5: Kitchens & Locks */}
-               <div className="absolute top-[48%] left-[68%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[50%] left-[58%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.2s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -163,7 +163,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 6: Electrical Supplies */}
-               <div className="absolute top-[52%] left-[62%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[52%] left-[44%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.5s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -179,7 +179,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 7: Plywood & Laminates */}
-               <div className="absolute top-[64%] left-[54%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[64%] left-[36%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.4s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -195,7 +195,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 8: Tools & Accessories */}
-               <div className="absolute top-[68%] left-[72%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[68%] left-[70%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "0.8s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
@@ -211,7 +211,7 @@ export default function Home() {
                </div>
 
                {/* Hotspot 9: Flooring & Adhesives */}
-               <div className="absolute top-[76%] left-[64%] pointer-events-auto group z-20 hover:z-50">
+               <div className="absolute top-[76%] left-[52%] pointer-events-auto group z-20 hover:z-50">
                  <div className="relative w-10 h-10">
                     <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-75" style={{animationDelay: "1.1s"}}></div>
                     <div className="relative w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(255,200,0,0.6)] cursor-pointer hover:scale-110 transition-transform">
