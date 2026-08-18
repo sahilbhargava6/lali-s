@@ -50,7 +50,7 @@ export default function Home() {
                  <p className="mt-4 text-gray-600 font-semibold leading-relaxed text-sm md:text-base">
                      We power your projects with dependable supply. Interact with the house model or explore our core material categories:
                  </p>
-                 <div className="mt-6 flex flex-wrap gap-2.5">
+                 <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-2.5">
                    {[
                      "Plywood & Laminates",
                      "Tools & Accessories",
@@ -65,8 +65,9 @@ export default function Home() {
                      <Link
                        key={idx}
                        href="/products"
-                       className="text-xs bg-slate-50 hover:bg-[#D22027] hover:text-white text-slate-700 px-4 py-2 rounded-xl transition-all border border-slate-200/60 font-bold hover:shadow-md hover:scale-105"
+                       className="text-xs md:text-sm text-slate-600 hover:text-[#D22027] font-bold flex items-center gap-2 group/item transition-colors"
                      >
+                       <span className="w-1.5 h-1.5 rounded-full bg-[#D22027]/40 group-hover/item:bg-[#D22027] transition-colors shrink-0"></span>
                        {catName}
                      </Link>
                    ))}
