@@ -92,7 +92,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Paints & Coatings</div>
-                       <p className="text-xs text-gray-500 mb-3">Premium paints and primers from Asian Paints, Dulux, and Birla Opus.</p>
+                       <p className="text-xs text-gray-500 mb-3">Dulux, Birla Opus, Asian Paints, ICA Pidilite, Indigo, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -108,7 +108,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Panels & Clads</div>
-                       <p className="text-xs text-gray-500 mb-3">Modern interior wall panels and beautiful exterior cladding selections.</p>
+                       <p className="text-xs text-gray-500 mb-3">Alex, Greenlam, Merino, Vox, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -124,7 +124,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 -translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Waterproofing</div>
-                       <p className="text-xs text-gray-500 mb-3">Robust leak-proofing & dampness solutions by Dr. Fixit & Bostik.</p>
+                       <p className="text-xs text-gray-500 mb-3">Bostik, Dr. Fixit, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -140,7 +140,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Plumbing & Sanitary</div>
-                       <p className="text-xs text-gray-500 mb-3">Complete piping, tanks & sanitaryware from Vectus, Supreme & Geberit.</p>
+                       <p className="text-xs text-gray-500 mb-3">Supreme, Vectus, Racold, Hindware, Essel, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -155,8 +155,8 @@ export default function Home() {
                     </div>
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                       <div className="font-bold text-[#111111] mb-1">Kitchens & Locks</div>
-                       <p className="text-xs text-gray-500 mb-3">Premium modular kitchen fittings from Hafele & Hettich, plus Yale locks.</p>
+                       <div className="font-bold text-[#111111] mb-1">Kitchen Hardware</div>
+                       <p className="text-xs text-gray-500 mb-3">Hafele, Dorset, Sleek, Harrison, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -172,7 +172,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Electrical Supplies</div>
-                       <p className="text-xs text-gray-500 mb-3">House wiring, switches, sockets, and heating from GreatWhite & Racold.</p>
+                       <p className="text-xs text-gray-500 mb-3">GreatWhite, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -188,7 +188,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Plywood & Laminates</div>
-                       <p className="text-xs text-gray-500 mb-3">Greenply, Greenpanel & Black Cobra plywoods and decorative veneers.</p>
+                       <p className="text-xs text-gray-500 mb-3">Greenply, Archidply, Greenlam Laminates, Virgo, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -204,7 +204,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Tools & Accessories</div>
-                       <p className="text-xs text-gray-500 mb-3">Power tools and accessories from Bosch, Dewalt, Stanley & Ingco.</p>
+                       <p className="text-xs text-gray-500 mb-3">DeWalt, Makita, Bosch, Stanley, Black & Decker, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>
@@ -220,7 +220,7 @@ export default function Home() {
                     {/* Popover */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-64 bg-white p-4 rounded-2xl shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
                        <div className="font-bold text-[#111111] mb-1">Flooring & Adhesives</div>
-                       <p className="text-xs text-gray-500 mb-3">Action Tesa flooring and Fevicol/Roff tile adhesives.</p>
+                       <p className="text-xs text-gray-500 mb-3">Vox, GreenPanel, JSW, Action Tesa, Fevicol, etc.</p>
                        <Link href="/products" className="text-xs font-bold text-[#D22027] flex items-center gap-1 hover:underline">Explore <ChevronRight className="w-3 h-3"/></Link>
                     </div>
                  </div>

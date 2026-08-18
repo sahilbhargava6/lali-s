@@ -3,15 +3,15 @@ import { Paintbrush, Droplets, Zap, Wrench, Utensils, Layers, LayoutGrid, Shield
 
 export default function ProductsPage() {
   const categories = [
-    { name: "Paints & Surface Coatings", icon: Paintbrush, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80", brands: "Dulux, Asian Paints, Indigo, Birla Opus" },
-    { name: "Plumbing & Sanitary", icon: Droplets, img: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=600&q=80", brands: "Geberit, Vectus, Supreme, Hindware" },
-    { name: "Electrical Supplies", icon: Zap, img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80", brands: "GreatWhite, Racold" },
-    { name: "Tools & Accessories", icon: Wrench, img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80", brands: "Bosch, Dewalt, Stanley, Ingco" },
-    { name: "Kitchens & Locks", icon: Utensils, img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80", brands: "Hafele, Hettich, Dorset, Yale" },
-    { name: "Plywood & Laminates", icon: Layers, img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80", brands: "Greenply, Greenpanel, Black Cobra" },
-    { name: "Flooring", icon: LayoutGrid, img: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=600&q=80", brands: "Action Tesa, Virgo" },
-    { name: "Waterproofing", icon: ShieldAlert, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80", brands: "Dr Fixit, Bostik" },
-    { name: "Tile Adhesives", icon: StickyNote, img: "https://images.unsplash.com/photo-1574359411659-15573a27fd0c?auto=format&fit=crop&w=600&q=80", brands: "Fevicol, Roff, MYK arment, Jivanjor" },
+    { name: "Paints & Surface Coatings", icon: Paintbrush, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80", brands: "Dulux, Birla Opus, Asian Paints, ICA Pidilite, Indigo" },
+    { name: "Plumbing & Sanitary", icon: Droplets, img: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=600&q=80", brands: "Supreme, Vectus, Racold, Hindware, Essel" },
+    { name: "Electrical Supplies", icon: Zap, img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80", brands: "GreatWhite" },
+    { name: "Tools & Accessories", icon: Wrench, img: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80", brands: "DeWalt, Makita, Bosch, Stanley, Black & Decker" },
+    { name: "Kitchens & Locks", icon: Utensils, img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80", brands: "Hafele, Dorset, Sleek, Harrison" },
+    { name: "Plywood & Laminates", icon: Layers, img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80", brands: "Greenply, Archidply, Greenlam Laminates, Virgo" },
+    { name: "Flooring", icon: LayoutGrid, img: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&w=600&q=80", brands: "Vox, GreenPanel, JSW, Action Tesa" },
+    { name: "Waterproofing", icon: ShieldAlert, img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=600&q=80", brands: "Bostik, Dr. Fixit" },
+    { name: "Tile Adhesives", icon: StickyNote, img: "https://images.unsplash.com/photo-1574359411659-15573a27fd0c?auto=format&fit=crop&w=600&q=80", brands: "Fevicol" },
   ];
 
   return (
