@@ -17,11 +17,8 @@ export default function Header() {
   return (
     <header className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300 rounded-2xl md:rounded-full border border-white/40 shadow-xl shadow-black/5 ${scrolled ? 'bg-white/70 backdrop-blur-xl py-2' : 'bg-white/30 backdrop-blur-md py-3'}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
-        <Link href="/" className="flex flex-col group shrink-0">
-          <span className="text-2xl md:text-3xl font-black tracking-tighter text-[#111111]">
-            LALISONS <span className="text-[#D22027]">BUILDMART</span>
-          </span>
-          <span className="text-[9px] uppercase tracking-[0.2em] text-gray-500 font-bold">Since 1924</span>
+        <Link href="/" className="flex items-center gap-2 group shrink-0">
+          <img src="/Logo-wb.png" alt="Lalisons Buildmart" className="h-10 md:h-12 w-auto object-contain" />
         </Link>
         
         <nav className="hidden lg:flex items-center gap-8 text-sm font-bold text-gray-700">

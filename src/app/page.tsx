@@ -48,8 +48,29 @@ export default function Home() {
                     <span className="text-[#D22027]">Bharosemand Naam.</span>
                 </h1>
                 <p className="mt-4 text-gray-600 font-medium leading-relaxed text-sm md:text-base">
-                    We power your projects with dependable supply. Interact with the house model to explore our core material categories.
+                    We power your projects with dependable supply. Interact with the house model or explore our core material categories:
                 </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {[
+                    "Plywood & Laminates",
+                    "Tools & Accessories",
+                    "Panels & Clads",
+                    "Waterproofing",
+                    "Electrical Supplies",
+                    "Paints & Coatings",
+                    "Plumbing & Sanitary",
+                    "Kitchens & Locks",
+                    "Flooring & Adhesives"
+                  ].map((catName, idx) => (
+                    <Link
+                      key={idx}
+                      href="/products"
+                      className="text-xs bg-slate-100 hover:bg-[#D22027] hover:text-white text-slate-700 px-3 py-1.5 rounded-full transition-all border border-slate-200/50 font-bold"
+                    >
+                      {catName}
+                    </Link>
+                  ))}
+                </div>
                 <div className="mt-6 flex gap-3">
                   <Link href="/products" className="bg-[#111111] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#D22027] transition-colors">
                     View Catalog

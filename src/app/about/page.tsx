@@ -1,5 +1,6 @@
 "use client";
 import { Award, Target, BookOpen, Users, MapPin } from "lucide-react";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
@@ -31,6 +32,28 @@ export default function AboutPage() {
                 <BookOpen className="w-8 h-8 text-[#D22027]" />
                 <div><h3 className="font-bold text-[#111111]">Our Core Values</h3><p className="text-sm text-gray-500">Integrity, Transparency, and Timeliness in every transaction.</p></div>
              </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Category & Catalog CTA Section */}
+      <div className="bg-slate-50 py-20 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black text-[#111111] mb-6">
+              Our Product Selection
+            </h2>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              Explore our primary categories housing over 13,500 distinct SKUs from 90+ industry-leading brands.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link href="/products" className="bg-[#D22027] text-white px-8 py-4 rounded-full font-bold hover:bg-[#b01920] transition-all shadow-lg shadow-red-500/20 text-center">
+                Explore Categories
+              </Link>
+              <Link href="/contact?subject=Catalog%20Request" className="bg-[#111111] text-white px-8 py-4 rounded-full font-bold hover:bg-slate-800 transition-all text-center">
+                Request Catalog
+              </Link>
+            </div>
           </div>
         </div>
       </div>

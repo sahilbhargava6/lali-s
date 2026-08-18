@@ -8,9 +8,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             <div className="lg:col-span-2">
-               <span className="text-3xl font-black tracking-tighter text-white mb-6 block">
-                  LALISONS <span className="text-[#D22027]">BUILDMART</span>
-               </span>
+               <div className="mb-6 block">
+                  <img src="/Logo-wb.png" alt="Lalisons Buildmart" className="h-10 w-auto object-contain brightness-0 invert" />
+               </div>
                <p className="text-gray-400 max-w-sm mb-8">
                   We power your projects with dependable supply, fair pricing, and delivery you can count on.
                </p>
