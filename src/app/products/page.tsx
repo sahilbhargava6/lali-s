@@ -18,24 +18,24 @@ export default function ProductsPage() {
     <div className="pt-24 bg-slate-50 min-h-screen pb-20">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
         <h1 className="text-4xl md:text-5xl font-black text-[#111111] mb-4">Complete <span className="text-[#D22027]">Product Catalog</span></h1>
-        <p className="text-xl text-gray-500 mb-12 max-w-3xl">Explore our 9 primary categories housing over 13,500 distinct SKUs from 90+ industry-leading brands.</p>
-        
+        <p className="text-xl text-gray-500 mb-12 max-w-3xl">Explore our primary categories housing over 13,500 distinct SKUs from 90+ industry-leading brands.</p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((cat, i) => (
             <div key={i} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:border-red-100 transition-all duration-300 group">
-               <div className="h-48 overflow-hidden relative">
-                 <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-               </div>
-               <div className="p-8">
-                  <div className="flex items-center gap-3 mb-4">
-                     <div className="p-2 bg-yellow-400 rounded-lg text-black"><cat.icon className="w-5 h-5"/></div>
-                     <h2 className="text-xl font-bold text-[#111111]">{cat.name}</h2>
-                  </div>
-                  <p className="text-sm text-gray-500 mb-6 font-medium">Top Brands: {cat.brands}</p>
-                  <button className="text-[#D22027] font-bold flex items-center gap-2 hover:gap-4 transition-all">
-                    Request Catalog <ChevronRight className="w-4 h-4" />
-                  </button>
-               </div>
+              <div className="h-48 overflow-hidden relative">
+                <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-yellow-400 rounded-lg text-black"><cat.icon className="w-5 h-5" /></div>
+                  <h2 className="text-xl font-bold text-[#111111]">{cat.name}</h2>
+                </div>
+                <p className="text-sm text-gray-500 mb-6 font-medium">Top Brands: {cat.brands}</p>
+                <button className="text-[#D22027] font-bold flex items-center gap-2 hover:gap-4 transition-all">
+                  Request Catalog <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
