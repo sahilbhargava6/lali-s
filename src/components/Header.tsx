@@ -25,6 +25,7 @@ export default function Header() {
            <Link href="/about" className="hover:text-[#D22027] transition-colors">About Us</Link>
            <Link href="/products" className="hover:text-[#D22027] transition-colors">Our Products</Link>
            <Link href="/projects" className="hover:text-[#D22027] transition-colors">Projects</Link>
+           <Link href="/blog" className="hover:text-[#D22027] transition-colors">Blog</Link>
            <Link href="/contact" className="hover:text-[#D22027] transition-colors">Contact</Link>
         </nav>
         
@@ -45,6 +46,7 @@ export default function Header() {
           <Link href="/about" onClick={() => setIsMenuOpen(false)} className="block text-lg hover:text-[#D22027]">About Us</Link>
           <Link href="/products" onClick={() => setIsMenuOpen(false)} className="block text-lg hover:text-[#D22027]">Our Products</Link>
           <Link href="/projects" onClick={() => setIsMenuOpen(false)} className="block text-lg hover:text-[#D22027]">Projects</Link>
+          <Link href="/blog" onClick={() => setIsMenuOpen(false)} className="block text-lg hover:text-[#D22027]">Blog</Link>
           <Link href="/contact" onClick={() => setIsMenuOpen(false)} className="block text-lg hover:text-[#D22027]">Contact</Link>
         </div>
       )}
