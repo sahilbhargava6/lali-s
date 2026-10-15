@@ -179,12 +179,12 @@ export default function Dashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 pt-28 pb-12 relative overflow-hidden">
         {/* Glow Effects */}
         <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] bg-[#D22027] rounded-full filter blur-[150px] opacity-20 pointer-events-none"></div>
         <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] bg-yellow-500 rounded-full filter blur-[150px] opacity-10 pointer-events-none"></div>
 
-        <div className="w-full max-w-md bg-slate-950/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative z-10">
+        <div className="w-full max-w-md bg-slate-950/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 text-[#D22027] rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Lock className="w-8 h-8" />
@@ -237,28 +237,28 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pt-28 pb-12 px-4 md:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 text-white pt-24 md:pt-28 pb-12 px-4 md:px-8 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#D22027] rounded-full filter blur-[150px] opacity-10 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 pb-6 border-b border-white/10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 md:mb-10 pb-6 border-b border-white/10">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <LayoutDashboard className="w-6 h-6 text-[#D22027]" />
               <span className="text-xs font-black uppercase tracking-widest text-[#D22027]">Console</span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight">Blog Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">Blog Dashboard</h1>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3 w-full md:w-auto">
             <button
               onClick={() => {
                 resetForm();
                 setActiveTab(activeTab === "list" ? "editor" : "list");
               }}
-              className="px-5 py-2.5 rounded-full font-bold text-sm bg-white text-slate-950 hover:bg-slate-100 transition-colors flex items-center gap-2"
+              className="flex-1 md:flex-none justify-center px-5 py-2.5 rounded-full font-bold text-sm bg-white text-slate-950 hover:bg-slate-100 transition-colors flex items-center gap-2 whitespace-nowrap"
             >
               {activeTab === "list" ? (
                 <>
@@ -293,9 +293,9 @@ export default function Dashboard() {
 
         {/* List Tab */}
         {activeTab === "list" && (
-          <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8">
+          <div className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-bold flex items-center gap-2">
                 <FileText className="w-5 h-5 text-yellow-400" /> Published Posts ({blogs.length})
               </h2>
               <button 
@@ -327,17 +327,17 @@ export default function Dashboard() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                      <th className="pb-4 w-24">Image</th>
+                      <th className="pb-4 w-24 hidden sm:table-cell">Image</th>
                       <th className="pb-4">Title</th>
-                      <th className="pb-4">Author</th>
-                      <th className="pb-4">Date</th>
+                      <th className="pb-4 hidden md:table-cell">Author</th>
+                      <th className="pb-4 hidden lg:table-cell">Date</th>
                       <th className="pb-4 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
                     {blogs.map((blog) => (
                       <tr key={blog.id} className="group hover:bg-white/[0.02] transition-colors">
-                        <td className="py-4 pr-4">
+                        <td className="py-4 pr-4 hidden sm:table-cell">
                           <img
                             src={blog.image_url || PRESET_IMAGES[0].url}
                             alt={blog.title}
@@ -345,18 +345,27 @@ export default function Dashboard() {
                           />
                         </td>
                         <td className="py-4 pr-4">
-                          <div className="font-bold text-white group-hover:text-[#D22027] transition-colors line-clamp-1">{blog.title}</div>
+                          <div className="font-bold text-white group-hover:text-[#D22027] transition-colors line-clamp-2 sm:line-clamp-1 break-words">{blog.title}</div>
                           <div className="text-xs text-gray-400 line-clamp-1 mt-1">{blog.summary}</div>
+                          {/* Author/date columns are hidden on smaller screens, so show them here */}
+                          <div className="text-[11px] text-gray-500 mt-1 lg:hidden">
+                            <span className="md:hidden">{blog.author} · </span>
+                            {new Date(blog.created_at).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })}
+                          </div>
                         </td>
-                        <td className="py-4 text-sm text-gray-300 font-semibold">{blog.author}</td>
-                        <td className="py-4 text-sm text-gray-400">
+                        <td className="py-4 pr-4 text-sm text-gray-300 font-semibold hidden md:table-cell">{blog.author}</td>
+                        <td className="py-4 pr-4 text-sm text-gray-400 whitespace-nowrap hidden lg:table-cell">
                           {new Date(blog.created_at).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
                             year: "numeric",
                           })}
                         </td>
-                        <td className="py-4 text-right">
+                        <td className="py-4 text-right align-top sm:align-middle">
                           <div className="flex justify-end gap-2">
                             <Link
                               href={`/blog/${blog.id}`}
@@ -395,7 +404,7 @@ export default function Dashboard() {
         {activeTab === "editor" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Editor Form */}
-            <form onSubmit={handleSubmit} className="bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 space-y-6">
+            <form onSubmit={handleSubmit} className="min-w-0 bg-slate-900/50 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 space-y-6">
               <h2 className="text-xl font-bold flex items-center gap-2 border-b border-white/10 pb-4">
                 <Sparkles className="w-5 h-5 text-yellow-400" />
                 {editingId ? "Edit Blog Post" : "Create New Blog Post"}
@@ -490,11 +499,11 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="flex gap-3 pt-4 border-t border-white/10">
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-white/10">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 bg-[#D22027] hover:bg-[#b01920] text-white py-3.5 rounded-xl font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center justify-center gap-2"
+                  className="sm:flex-1 bg-[#D22027] hover:bg-[#b01920] text-white py-3.5 rounded-xl font-bold transition-all shadow-lg hover:shadow-red-500/20 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -518,13 +527,13 @@ export default function Dashboard() {
             </form>
 
             {/* Live Preview Panel */}
-            <div className="bg-slate-900/30 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 sticky top-28 space-y-6">
+            <div className="bg-slate-900/30 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 min-w-0 lg:sticky lg:top-28 space-y-6">
               <h2 className="text-xl font-bold flex items-center gap-2 border-b border-white/10 pb-4 text-gray-400">
                 <Eye className="w-5 h-5 text-gray-400" /> Live Feed Preview
               </h2>
 
               <div className="bg-slate-950 rounded-2xl overflow-hidden border border-white/5 shadow-2xl transition-all duration-300">
-                <div className="h-56 relative bg-slate-900 flex items-center justify-center overflow-hidden">
+                <div className="h-44 sm:h-56 relative bg-slate-900 flex items-center justify-center overflow-hidden">
                   {imageUrl ? (
                     <img src={imageUrl} alt="Cover Preview" className="w-full h-full object-cover" />
                   ) : (
@@ -545,7 +554,7 @@ export default function Dashboard() {
                     <span>Just Now</span>
                   </div>
 
-                  <h3 className="text-2xl font-black text-white leading-tight line-clamp-2">
+                  <h3 className="text-xl sm:text-2xl font-black text-white leading-tight line-clamp-2 break-words">
                     {title || "Untitled Blog Post"}
                   </h3>
 

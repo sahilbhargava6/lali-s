@@ -80,22 +80,22 @@ export default function BlogDetail({ params }: PageProps) {
   }
 
   return (
-    <article className="w-full min-h-screen bg-slate-50 pt-28 pb-20">
+    <article className="w-full min-h-screen bg-slate-50 pt-24 md:pt-28 pb-16 md:pb-20">
       <div className="max-w-4xl mx-auto px-4 md:px-8">
         
         {/* Navigation Back Link */}
         <Link 
           href="/blog" 
-          className="inline-flex items-center gap-2 text-sm font-bold text-[#D22027] hover:underline mb-8"
+          className="inline-flex items-center gap-2 text-sm font-bold text-[#D22027] hover:underline mb-6 md:mb-8"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Articles
         </Link>
 
         {/* Hero Card */}
-        <div className="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100">
+        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100">
           
           {/* Header Image */}
-          <div className="h-[300px] md:h-[450px] w-full relative bg-slate-200">
+          <div className="h-56 sm:h-[300px] md:h-[450px] w-full relative bg-slate-200">
             <img 
               src={blog.image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"} 
               alt={blog.title} 
@@ -105,8 +105,8 @@ export default function BlogDetail({ params }: PageProps) {
           </div>
 
           {/* Meta & Title */}
-          <div className="px-6 py-8 md:p-12 border-b border-slate-100">
-            <div className="flex flex-wrap gap-4 items-center text-xs font-bold text-gray-500 mb-6 uppercase tracking-wider">
+          <div className="px-5 py-6 sm:px-8 sm:py-8 md:p-12 border-b border-slate-100">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 items-center text-xs font-bold text-gray-500 mb-4 md:mb-6 uppercase tracking-wider">
               <div className="flex items-center gap-1.5">
                 <User className="w-4 h-4 text-gray-400" />
                 <span>{blog.author || "Lali's Buildmart Admin"}</span>
@@ -124,31 +124,31 @@ export default function BlogDetail({ params }: PageProps) {
               </div>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-black text-[#111111] leading-tight tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-[#111111] leading-tight tracking-tight break-words">
               {blog.title}
             </h1>
 
-            <p className="mt-6 text-gray-500 text-lg font-semibold leading-relaxed border-l-4 border-[#D22027] pl-4">
+            <p className="mt-4 md:mt-6 text-gray-500 text-base md:text-lg font-semibold leading-relaxed border-l-4 border-[#D22027] pl-4">
               {blog.summary}
             </p>
           </div>
 
           {/* Main Body Content */}
-          <div className="px-6 py-10 md:p-12">
-            <div className="text-slate-700 text-base md:text-lg leading-relaxed whitespace-pre-line font-sans space-y-6">
+          <div className="px-5 py-8 sm:px-8 sm:py-10 md:p-12">
+            <div className="text-slate-700 text-base md:text-lg leading-relaxed whitespace-pre-line break-words font-sans space-y-6">
               {blog.content}
             </div>
           </div>
 
           {/* Footer Call to Action */}
-          <div className="px-6 py-8 md:px-12 bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6 border-t border-slate-800">
+          <div className="px-5 py-8 sm:px-8 md:px-12 bg-slate-900 text-white flex flex-col md:flex-row items-center justify-between gap-6 border-t border-slate-800 text-center md:text-left">
             <div>
               <h4 className="font-black text-lg md:text-xl">Need materials for your project?</h4>
               <p className="text-sm text-gray-400 mt-1">Get in touch with Lali's Buildmart for priority bulk order quotes.</p>
             </div>
             <Link 
               href="/contact" 
-              className="bg-[#D22027] text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-[#b01920] transition-colors shadow-lg shadow-red-500/20 shrink-0"
+              className="w-full sm:w-auto text-center bg-[#D22027] text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-[#b01920] transition-colors shadow-lg shadow-red-500/20 shrink-0"
             >
               Get Free Quote
             </Link>

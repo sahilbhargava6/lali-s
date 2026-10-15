@@ -48,17 +48,17 @@ export default function BlogList() {
   );
 
   return (
-    <div className="w-full min-h-screen bg-slate-50 pt-28 pb-20">
+    <div className="w-full min-h-screen bg-slate-50 pt-24 md:pt-28 pb-16 md:pb-20">
       {/* HEADER SECTION */}
-      <section className="py-12 md:py-20 px-4 md:px-8 bg-slate-900 text-white relative overflow-hidden mb-12">
+      <section className="py-12 md:py-20 px-4 md:px-8 bg-slate-900 text-white relative overflow-hidden mb-10 md:mb-12">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-[#D22027] skew-x-[-15deg] opacity-10 blur-3xl pointer-events-none"></div>
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-12 h-1 bg-[#D22027]"></div>
+            <div className="w-8 sm:w-12 h-1 bg-[#D22027] shrink-0"></div>
             <span className="text-xs md:text-sm font-black uppercase tracking-widest text-[#D22027]">Lali's Buildmart</span>
-            <div className="w-12 h-1 bg-[#D22027]"></div>
+            <div className="w-8 sm:w-12 h-1 bg-[#D22027] shrink-0"></div>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight mb-4 md:mb-6">
             Insights & <span className="text-yellow-400">Industry News</span>
           </h1>
           <p className="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
@@ -70,7 +70,7 @@ export default function BlogList() {
       {/* BLOG FEED CONTENT */}
       <main className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Search Bar */}
-        <div className="max-w-md mx-auto mb-16 relative">
+        <div className="max-w-md mx-auto mb-10 md:mb-16 relative">
           <input
             type="text"
             placeholder="Search articles..."
@@ -97,14 +97,14 @@ export default function BlogList() {
           </div>
         ) : (
           /* Cards Grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {filteredBlogs.map((blog) => (
               <article 
                 key={blog.id} 
                 className="group bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col h-full hover:shadow-2xl hover:shadow-red-900/5 transition-all duration-300"
               >
                 {/* Image */}
-                <div className="h-56 overflow-hidden relative bg-slate-200">
+                <div className="h-48 sm:h-56 overflow-hidden relative bg-slate-200">
                   <img 
                     src={blog.image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"} 
                     alt={blog.title} 
@@ -140,7 +140,7 @@ export default function BlogList() {
                     {blog.summary}
                   </p>
 
-                  <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
+                  <div className="mt-auto pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
                     <span className="text-[11px] font-black uppercase tracking-widest text-[#D22027]">BUILDMART INSIGHTS</span>
                     <Link 
                       href={`/blog/${blog.id}`}

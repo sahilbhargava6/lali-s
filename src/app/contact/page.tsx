@@ -37,37 +37,37 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-24 bg-slate-50 min-h-screen pb-20">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          
+    <div className="pt-24 bg-slate-50 min-h-screen pb-16 md:pb-20">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+
           {/* Contact Info */}
           <div>
-            <h1 className="text-4xl md:text-5xl font-black text-[#111111] mb-6">Let's <span className="text-[#D22027]">Connect</span></h1>
-            <p className="text-xl text-gray-500 mb-12 max-w-md">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#111111] mb-4 md:mb-6">Let's <span className="text-[#D22027]">Connect</span></h1>
+            <p className="text-base sm:text-lg md:text-xl text-gray-500 mb-8 md:mb-12 max-w-md">
               Whether you need a bulk quotation, have a product inquiry, or want to partner with us, our team is ready to help.
             </p>
 
-            <div className="space-y-8">
-               <div className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-                  <div className="p-3 bg-yellow-400 rounded-xl"><Phone className="w-6 h-6 text-black"/></div>
-                  <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-6">
+               <div className="flex items-start gap-4 p-5 sm:p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+                  <div className="p-3 bg-yellow-400 rounded-xl shrink-0"><Phone className="w-6 h-6 text-black"/></div>
+                  <div className="min-w-0">
                     <h3 className="font-bold text-lg text-[#111111] mb-1">Call Us</h3>
-                    <p className="text-gray-500">+91 80916 03100</p>
-                    <p className="text-gray-500">+91 80916 04100</p>
-                  </div>
-               </div>
-               
-               <div className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-                  <div className="p-3 bg-yellow-400 rounded-xl"><Mail className="w-6 h-6 text-black"/></div>
-                  <div>
-                    <h3 className="font-bold text-lg text-[#111111] mb-1">Email Us</h3>
-                    <p className="text-gray-500">lalisbuildmart@gmail.com</p>
+                    <a href="tel:+918091603100" className="block text-gray-500 hover:text-[#D22027] transition-colors">+91 80916 03100</a>
+                    <a href="tel:+918091604100" className="block text-gray-500 hover:text-[#D22027] transition-colors">+91 80916 04100</a>
                   </div>
                </div>
 
-               <div className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
-                  <div className="p-3 bg-yellow-400 rounded-xl"><MapPin className="w-6 h-6 text-black"/></div>
+               <div className="flex items-start gap-4 p-5 sm:p-6 bg-white rounded-2xl shadow-sm border border-gray-100">
+                  <div className="p-3 bg-yellow-400 rounded-xl shrink-0"><Mail className="w-6 h-6 text-black"/></div>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-lg text-[#111111] mb-1">Email Us</h3>
+                    <a href="mailto:lalisbuildmart@gmail.com" className="block text-gray-500 hover:text-[#D22027] transition-colors break-all">lalisbuildmart@gmail.com</a>
+                  </div>
+               </div>
+
+               <div className="flex items-start gap-4 p-5 sm:p-6 bg-white rounded-2xl shadow-sm border border-gray-100 sm:col-span-2 lg:col-span-1">
+                  <div className="p-3 bg-yellow-400 rounded-xl shrink-0"><MapPin className="w-6 h-6 text-black"/></div>
                   <div>
                     <h3 className="font-bold text-lg text-[#111111] mb-1">Visit Us</h3>
                     <p className="text-gray-500">Near ITI, Dari, Dharamshala, <br/>Himachal Pradesh, 176057</p>
@@ -77,7 +77,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-gray-100 relative overflow-hidden">
+          <div className="bg-white p-6 sm:p-8 md:p-12 rounded-[1.75rem] sm:rounded-[2.5rem] shadow-2xl border border-gray-100 relative overflow-hidden">
              
              {/* Success Overlay */}
              <div className={`absolute inset-0 bg-white z-20 flex flex-col items-center justify-center p-8 text-center transition-all duration-500 ${status === "success" ? "opacity-100 visible" : "opacity-0 invisible"}`}>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                 </button>
              </div>
 
-             <h2 className="text-3xl font-black text-[#111111] mb-8">Request a Bulk Quote</h2>
+             <h2 className="text-2xl sm:text-3xl font-black text-[#111111] mb-6 sm:mb-8">Request a Bulk Quote</h2>
              
              {status === "error" && (
                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm font-medium">
@@ -102,8 +102,8 @@ export default function ContactPage() {
                </div>
              )}
 
-             <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                    <div>
                      <label className="block text-sm font-bold text-gray-700 mb-2">First Name</label>
                      <input type="text" name="firstName" required className="w-full bg-slate-50 border border-gray-200 px-4 py-3 rounded-xl focus:outline-none focus:border-[#D22027] focus:ring-1 focus:ring-[#D22027]" placeholder="John" />

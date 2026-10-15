@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# print-resolution brochure source files (too large for GitHub; web copy lives in public/)
+*(Print File).pdf

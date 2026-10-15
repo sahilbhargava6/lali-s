@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -23,6 +23,13 @@ export const metadata: Metadata = {
   keywords: ["Construction Materials", "Bulk Supply", "Wholesale Hardware", "Paints Dharamshala", "Modular Kitchens", "Building Partner"],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#111111",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${playfair.variable} ${plusJakarta.variable} font-sans bg-slate-50 text-slate-900 antialiased selection:bg-[#D22027] selection:text-white`}>
+      <body className={`${playfair.variable} ${plusJakarta.variable} font-sans bg-slate-50 text-slate-900 antialiased overflow-x-clip selection:bg-[#D22027] selection:text-white`}>
         <Header />
         <main className="min-h-screen">
           {children}
