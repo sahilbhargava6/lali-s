@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ChevronRight, Paintbrush, Droplets, Zap, Wrench, Utensils, Layers, LayoutGrid, ShieldAlert, Award, ShieldCheck, Handshake, CheckCircle2, HeadphonesIcon, FileText, Clock, Truck, Package, Lightbulb } from "lucide-react";
 import Link from "next/link";
+import BrandMarquee from "@/components/BrandMarquee";
 
 export default function Home() {
   // Index of the hotspot opened by tap/click (touch devices have no hover)
@@ -183,6 +184,19 @@ export default function Home() {
              ))}
           </div>
         </div>
+      </section>
+
+      {/* BRAND PARTNERS */}
+      <section className="py-14 md:py-20 bg-slate-50 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-black text-[#111111] tracking-tight mb-4">
+            Our <span className="text-[#D22027]">Brand Partners</span>
+          </h2>
+          <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+            We deliver quality materials from industry-leading brands to bring your projects to life.
+          </p>
+        </div>
+        <BrandMarquee />
       </section>
 
       {/* STRENGTH IN NUMBERS */}

@@ -50,14 +50,25 @@
   100% { transform: translateX(-50%); }
 }
 
+/* Content must be duplicated once so the -50% shift loops seamlessly */
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 35s linear infinite;
+  animation: marquee var(--marquee-duration, 35s) linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation-direction: reverse;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
 }
 
 /* Custom scrollbar */
