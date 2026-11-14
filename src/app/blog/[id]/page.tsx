@@ -1,9 +1,7 @@
-"use client";
-
-import { useState, useEffect, use } from "react";
-import { supabase } from "@/lib/supabase";
-import { ArrowLeft, Calendar, User, BookOpen, Loader2 } from "lucide-react";
-import Link from "next/link";
+import type { Metadata } from 'next';
+import { supabase } from '@/lib/supabase';
+import { ArrowLeft, Calendar, User, BookOpen } from 'lucide-react';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,51 +13,68 @@ interface Blog {
   image_url: string;
   author: string;
   created_at: string;
+  meta_title?: string;
+  meta_description?: string;
+  meta_keywords?: string;
 }
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function BlogDetail({ params }: PageProps) {
-  const resolvedParams = use(params);
-  const id = resolvedParams.id;
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const { data: blog } = await supabase
+    .from('blogs')
+    .select('*')
+    .eq('id', id)
+    .single();
 
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    async function fetchBlog() {
-      try {
-        const { data, error } = await supabase
-          .from("blogs")
-          .select("*")
-          .eq("id", id)
-          .single();
-
-        if (error) throw error;
-        setBlog(data);
-      } catch (err: any) {
-        console.error("Failed to load blog post:", err);
-        setErrorMsg(err.message || "Failed to load the article.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchBlog();
-  }, [id]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center pt-28 pb-12">
-        <Loader2 className="w-10 h-10 animate-spin text-[#D22027] mb-4" />
-        <span className="font-bold text-sm text-slate-500">Loading article...</span>
-      </div>
-    );
+  if (!blog) {
+    return {
+      title: "Article Not Found | Lali's Buildmart",
+      description: "The requested article could not be found.",
+    };
   }
 
-  if (errorMsg || !blog) {
+  const title = blog.meta_title?.trim() || `${blog.title} | Lali's Buildmart`;
+  const description = blog.meta_description?.trim() || blog.summary;
+  const keywords = blog.meta_keywords 
+    ? blog.meta_keywords.split(',').map((k: string) => k.trim()) 
+    : undefined;
+
+  return {
+    title,
+    description,
+    keywords,
+    authors: [{ name: blog.author || "Lali's Buildmart Admin" }],
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime: blog.created_at,
+      authors: [blog.author || "Lali's Buildmart Admin"],
+      images: blog.image_url ? [{ url: blog.image_url }] : [],
+    },
+    twitter: {
+      card: blog.image_url ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: blog.image_url ? [blog.image_url] : [],
+    },
+  };
+}
+
+export default async function BlogDetail({ params }: PageProps) {
+  const { id } = await params;
+
+  const { data: blog, error } = await supabase
+    .from('blogs')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error || !blog) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center pt-28 pb-12 px-4">
         <div className="bg-white border border-slate-100 p-8 rounded-3xl max-w-md w-full shadow-lg text-center">

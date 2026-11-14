@@ -6,7 +6,7 @@ import {
   Plus, Edit, Trash2, Eye, LayoutDashboard, FileText, CheckCircle2, 
   AlertCircle, Lock, KeyRound, Loader2, ArrowLeft, RefreshCw, 
   Sparkles, Image as ImageIcon, Upload, X, ExternalLink, Search,
-  Calendar, User, ArrowRight
+  Calendar, User, ArrowRight, Globe, Share2, Tag, ChevronDown, ChevronUp
 } from "lucide-react";
 import Link from "next/link";
 
@@ -18,6 +18,9 @@ interface Blog {
   image_url: string;
   author: string;
   created_at: string;
+  meta_title?: string;
+  meta_description?: string;
+  meta_keywords?: string;
 }
 
 export default function Dashboard() {
@@ -37,13 +40,20 @@ export default function Dashboard() {
   // Active tab: 'list' | 'editor'
   const [activeTab, setActiveTab] = useState<"list" | "editor">("list");
   
-  // Editor state
+  // Editor core state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [author, setAuthor] = useState("Lali's Buildmart Admin");
+
+  // SEO state
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
+  const [metaKeywords, setMetaKeywords] = useState("");
+  const [showSeoSection, setShowSeoSection] = useState(true);
+  const [previewMode, setPreviewMode] = useState<"feed" | "google" | "social">("feed");
 
   // Image Upload state
   const [isUploadingImage, setIsUploadingImage] = useState(false);
@@ -96,7 +106,7 @@ export default function Dashboard() {
 
   const showNotification = (type: "success" | "error", message: string) => {
     setNotification({ type, message });
-    setTimeout(() => setNotification(null), 5000);
+    setTimeout(() => setNotification(null), 7000);
   };
 
   const resetForm = () => {
@@ -106,6 +116,9 @@ export default function Dashboard() {
     setContent("");
     setImageUrl("");
     setAuthor("Lali's Buildmart Admin");
+    setMetaTitle("");
+    setMetaDescription("");
+    setMetaKeywords("");
     setShowUrlInput(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -117,6 +130,9 @@ export default function Dashboard() {
     setContent(blog.content);
     setImageUrl(blog.image_url || "");
     setAuthor(blog.author || "Lali's Buildmart Admin");
+    setMetaTitle(blog.meta_title || "");
+    setMetaDescription(blog.meta_description || "");
+    setMetaKeywords(blog.meta_keywords || "");
     setShowUrlInput(false);
     setActiveTab("editor");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -240,30 +256,61 @@ export default function Dashboard() {
     }
 
     setIsSubmitting(true);
-    const blogData = {
+    const blogData: any = {
       title: title.trim(),
       summary: summary.trim(),
       content: content.trim(),
       image_url: imageUrl.trim() || null,
       author: author.trim() || "Lali's Buildmart Admin",
+      meta_title: metaTitle.trim() || null,
+      meta_description: metaDescription.trim() || null,
+      meta_keywords: metaKeywords.trim() || null,
     };
 
     try {
+      let error: any = null;
+
       if (editingId) {
-        const { error } = await supabase
+        const res = await supabase
           .from("blogs")
           .update(blogData)
           .eq("id", editingId);
-        
-        if (error) throw error;
-        showNotification("success", "Article updated successfully!");
+        error = res.error;
       } else {
-        const { error } = await supabase
+        const res = await supabase
           .from("blogs")
           .insert([blogData]);
+        error = res.error;
+      }
 
-        if (error) throw error;
-        showNotification("success", "New article published successfully!");
+      // If SEO columns are missing in Supabase, retry saving core post and alert admin
+      if (error && error.message && error.message.toLowerCase().includes("column")) {
+        console.warn("SEO columns missing in Supabase table. Falling back to core columns.", error);
+        const fallbackData = {
+          title: blogData.title,
+          summary: blogData.summary,
+          content: blogData.content,
+          image_url: blogData.image_url,
+          author: blogData.author,
+        };
+
+        const retryRes = editingId
+          ? await supabase.from("blogs").update(fallbackData).eq("id", editingId)
+          : await supabase.from("blogs").insert([fallbackData]);
+
+        if (retryRes.error) throw retryRes.error;
+
+        showNotification(
+          "success",
+          "Article saved! Notice: Run the 1-line SQL in Supabase SQL editor to enable SEO columns: ALTER TABLE blogs ADD COLUMN IF NOT EXISTS meta_title TEXT, ADD COLUMN IF NOT EXISTS meta_description TEXT, ADD COLUMN IF NOT EXISTS meta_keywords TEXT;"
+        );
+      } else if (error) {
+        throw error;
+      } else {
+        showNotification(
+          "success", 
+          editingId ? "Article & SEO metadata updated successfully!" : "New article published with SEO metadata!"
+        );
       }
 
       resetForm();
@@ -282,6 +329,10 @@ export default function Dashboard() {
     b.author.toLowerCase().includes(searchFilter.toLowerCase())
   );
 
+  // Computed values for SEO previews
+  const activeMetaTitle = metaTitle.trim() || title.trim() || "Untitled Blog Post";
+  const activeMetaDescription = metaDescription.trim() || summary.trim() || "Stay updated with construction guides, materials selection tips, and updates from Lali's Buildmart.";
+
   // ----------------------------------------------------
   // LOGIN SCREEN
   // ----------------------------------------------------
@@ -297,7 +348,7 @@ export default function Dashboard() {
               <Lock className="w-7 h-7" />
             </div>
             <h1 className="text-2xl font-black text-slate-900 tracking-tight">Blog Studio</h1>
-            <p className="text-slate-500 text-sm mt-1.5 font-medium">Lali's Buildmart Article Management</p>
+            <p className="text-slate-500 text-sm mt-1.5 font-medium">Lali's Buildmart Article & SEO Management</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
@@ -369,10 +420,10 @@ export default function Dashboard() {
               <div className="flex items-center gap-2">
                 <h1 className="text-xl md:text-2xl font-black text-slate-900">Blog Studio</h1>
                 <span className="text-[10px] font-black uppercase tracking-wider bg-red-100 text-[#D22027] px-2 py-0.5 rounded-md">
-                  Admin
+                  Admin & SEO
                 </span>
               </div>
-              <p className="text-xs text-slate-500">Create, edit, and organize articles published on Lali's Buildmart</p>
+              <p className="text-xs text-slate-500">Publish articles, manage images, and optimize search rankings (SEO)</p>
             </div>
           </div>
 
@@ -420,17 +471,17 @@ export default function Dashboard() {
 
         {/* Notifications */}
         {notification && (
-          <div className={`mb-6 p-4 rounded-2xl border flex items-center gap-3 shadow-sm animate-fade-in ${
+          <div className={`mb-6 p-4 rounded-2xl border flex items-start gap-3 shadow-sm animate-fade-in ${
             notification.type === "success" 
               ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
               : "bg-red-50 border-red-200 text-red-800"
           }`}>
             {notification.type === "success" ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
             ) : (
-              <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+              <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
             )}
-            <span className="font-bold text-sm">{notification.message}</span>
+            <span className="font-bold text-sm leading-relaxed">{notification.message}</span>
           </div>
         )}
 
@@ -448,7 +499,7 @@ export default function Dashboard() {
                     {blogs.length}
                   </span>
                 </h2>
-                <p className="text-xs text-slate-500 mt-1">Manage, update, or remove existing blog posts</p>
+                <p className="text-xs text-slate-500 mt-1">Manage, update, or remove existing blog posts and SEO tags</p>
               </div>
 
               {/* Search filter & refresh */}
@@ -487,8 +538,8 @@ export default function Dashboard() {
                 <h3 className="text-base font-bold text-slate-800 mb-1">No articles found</h3>
                 <p className="text-slate-500 text-xs max-w-sm mx-auto mb-5">
                   {searchFilter 
-                    ? "No articles matched your search query. Try clear your search." 
-                    : "You haven't published any articles yet. Create your first post!"}
+                    ? "No articles matched your search query. Try clearing your search." 
+                    : "You haven't published any articles yet. Create your first post with SEO!"}
                 </p>
                 <button
                   onClick={() => setActiveTab("editor")}
@@ -502,7 +553,7 @@ export default function Dashboard() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-slate-200 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      <th className="pb-3 w-20 hidden sm:table-cell">Image</th>
+                      <th className="pb-3 w-20 hidden sm:table-cell">Cover</th>
                       <th className="pb-3">Article Details</th>
                       <th className="pb-3 hidden md:table-cell">Author</th>
                       <th className="pb-3 hidden lg:table-cell">Date</th>
@@ -523,7 +574,7 @@ export default function Dashboard() {
                           ) : (
                             <div className="w-16 h-12 bg-slate-100 rounded-lg border border-slate-200 flex flex-col items-center justify-center text-[9px] font-bold text-slate-400">
                               <FileText className="w-3.5 h-3.5 mb-0.5 opacity-60" />
-                              <span>No Image</span>
+                              <span>Text Only</span>
                             </div>
                           )}
                         </td>
@@ -535,6 +586,18 @@ export default function Dashboard() {
                           </div>
                           <div className="text-xs text-slate-500 line-clamp-1 mt-0.5">
                             {blog.summary}
+                          </div>
+                          {/* SEO indicators */}
+                          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            {blog.meta_title ? (
+                              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                                <Globe className="w-2.5 h-2.5" /> SEO Custom
+                              </span>
+                            ) : (
+                              <span className="text-[10px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md">
+                                Auto SEO
+                              </span>
+                            )}
                           </div>
                           {/* Mobile subtext */}
                           <div className="text-[11px] text-slate-400 mt-1 lg:hidden flex items-center gap-2">
@@ -578,7 +641,7 @@ export default function Dashboard() {
                             <button
                               onClick={() => startEdit(blog)}
                               className="p-2 text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
-                              title="Edit post"
+                              title="Edit post & SEO"
                             >
                               <Edit className="w-4 h-4" />
                             </button>
@@ -601,7 +664,7 @@ export default function Dashboard() {
         )}
 
         {/* ==================================================== */}
-        {/* EDITOR TAB: CREATE / EDIT ARTICLE + LIVE PREVIEW    */}
+        {/* EDITOR TAB: CREATE / EDIT ARTICLE + SEO + PREVIEWS  */}
         {/* ==================================================== */}
         {activeTab === "editor" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -615,7 +678,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-[#D22027]" />
                   <h2 className="text-lg font-black text-slate-900">
-                    {editingId ? "Edit Article" : "Write New Article"}
+                    {editingId ? "Edit Article & SEO" : "Write New Article & SEO"}
                   </h2>
                 </div>
                 {editingId && (
@@ -670,9 +733,7 @@ export default function Dashboard() {
                   />
                 </div>
 
-                {/* ==================================================== */}
-                {/* DEDICATED IMAGE UPLOAD SECTION                       */}
-                {/* ==================================================== */}
+                {/* Cover Image Upload Section */}
                 <div className="pt-2">
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
@@ -689,7 +750,6 @@ export default function Dashboard() {
                     )}
                   </div>
 
-                  {/* Hidden file input */}
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -698,7 +758,6 @@ export default function Dashboard() {
                     className="hidden"
                   />
 
-                  {/* Image Active Preview or Upload Dropzone */}
                   {imageUrl ? (
                     <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 group">
                       <img
@@ -752,7 +811,7 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  {/* Optional Toggle to enter URL manually */}
+                  {/* Toggle URL input */}
                   <div className="mt-2 text-right">
                     <button
                       type="button"
@@ -793,6 +852,108 @@ export default function Dashboard() {
                     required
                   ></textarea>
                 </div>
+
+                {/* ==================================================== */}
+                {/* ADVANCED SEO & SEARCH RANKING TOOLS                  */}
+                {/* ==================================================== */}
+                <div className="border border-slate-200 rounded-2xl p-5 bg-gradient-to-b from-slate-50 to-white shadow-sm space-y-4">
+                  <div 
+                    onClick={() => setShowSeoSection(!showSeoSection)}
+                    className="flex items-center justify-between cursor-pointer select-none"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+                        <Globe className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                          <span>Search Engine Optimization (SEO) & Social Sharing</span>
+                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                            Google Ready
+                          </span>
+                        </h3>
+                        <p className="text-xs text-slate-500">Customize how this post ranks on Google and appears when shared on WhatsApp & Twitter</p>
+                      </div>
+                    </div>
+                    <button type="button" className="text-slate-400 hover:text-slate-600">
+                      {showSeoSection ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </button>
+                  </div>
+
+                  {showSeoSection && (
+                    <div className="space-y-4 pt-3 border-t border-slate-200">
+                      {/* Meta Title */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>Meta Title</span>
+                            <span className="text-slate-400 font-normal lowercase">(search engine title)</span>
+                          </label>
+                          <span className={`text-[11px] font-mono font-bold ${
+                            metaTitle.length > 60 ? "text-amber-600" : "text-slate-400"
+                          }`}>
+                            {metaTitle.length}/60 chars {metaTitle.length > 60 && "(long)"}
+                          </span>
+                        </div>
+                        <input
+                          type="text"
+                          value={metaTitle}
+                          onChange={(e) => setMetaTitle(e.target.value)}
+                          placeholder={title || "e.g. Best Plywood in Himachal | Lali's Buildmart Guide"}
+                          className="w-full bg-white border border-slate-300 focus:border-[#D22027] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition-colors"
+                        />
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          Leave empty to automatically use your Article Title.
+                        </p>
+                      </div>
+
+                      {/* Meta Description */}
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>Meta Description</span>
+                            <span className="text-slate-400 font-normal lowercase">(Google search snippet)</span>
+                          </label>
+                          <span className={`text-[11px] font-mono font-bold ${
+                            metaDescription.length > 160 ? "text-amber-600" : "text-slate-400"
+                          }`}>
+                            {metaDescription.length}/160 chars {metaDescription.length > 160 && "(long)"}
+                          </span>
+                        </div>
+                        <textarea
+                          value={metaDescription}
+                          onChange={(e) => setMetaDescription(e.target.value)}
+                          placeholder={summary || "Detailed overview that tells searchers what they will learn from this article..."}
+                          rows={3}
+                          className="w-full bg-white border border-slate-300 focus:border-[#D22027] rounded-xl p-3 text-xs text-slate-900 focus:outline-none transition-colors resize-y leading-relaxed"
+                        ></textarea>
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          Recommended: 120–160 characters. Leave empty to automatically use your Summary.
+                        </p>
+                      </div>
+
+                      {/* Meta Keywords */}
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                          <Tag className="w-3.5 h-3.5 text-slate-400" />
+                          <span>Keywords & Topics</span>
+                          <span className="text-slate-400 font-normal lowercase">(comma separated)</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={metaKeywords}
+                          onChange={(e) => setMetaKeywords(e.target.value)}
+                          placeholder="plywood, building materials, construction Dharamshala, cement, interior"
+                          className="w-full bg-white border border-slate-300 focus:border-[#D22027] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none transition-colors"
+                        />
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          Helps search engines categorize this article.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
               </div>
 
               {/* Form Buttons */}
@@ -805,10 +966,10 @@ export default function Dashboard() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Saving Article...</span>
+                      <span>Saving Article & SEO...</span>
                     </>
                   ) : (
-                    <span>{editingId ? "Update Article" : "Publish Article"}</span>
+                    <span>{editingId ? "Update Article & SEO" : "Publish Article with SEO"}</span>
                   )}
                 </button>
                 <button
@@ -824,79 +985,203 @@ export default function Dashboard() {
               </div>
             </form>
 
-            {/* LIVE FEED PREVIEW COLUMN (5 cols) */}
-            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm lg:sticky lg:top-28 space-y-4">
+            {/* LIVE PREVIEWS COLUMN (5 cols) */}
+            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm lg:sticky lg:top-28 space-y-5">
+              
+              {/* Preview Mode Selector Tabs */}
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h3 className="text-sm font-black text-slate-800 flex items-center gap-2">
+                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
                   <Eye className="w-4 h-4 text-[#D22027]" />
-                  <span>Live Feed Card Preview</span>
+                  <span>Real-Time Previews</span>
                 </h3>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                  How it appears on /blog
-                </span>
-              </div>
 
-              <p className="text-xs text-slate-500">
-                This shows exactly how visitors will see your article on the main blog feed:
-              </p>
-
-              {/* Exact Card Preview */}
-              <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 flex flex-col transition-all">
-                {/* Image Section - Only rendered if an image is provided */}
-                {imageUrl ? (
-                  <div className="h-48 overflow-hidden relative bg-slate-100">
-                    <img 
-                      src={imageUrl} 
-                      alt="Preview" 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    
-                    <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm rounded-lg px-2.5 py-1 flex items-center gap-1.5 shadow-sm text-[10px] font-bold text-slate-800">
-                      <Calendar className="w-3 h-3 text-[#D22027]" />
-                      <span>Today</span>
-                    </div>
-                  </div>
-                ) : null}
-
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center justify-between text-xs text-gray-500 font-bold mb-3 uppercase tracking-wider">
-                    <div className="flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5 text-gray-400" />
-                      <span>{author || "Lali's Buildmart Admin"}</span>
-                    </div>
-                    {!imageUrl && (
-                      <div className="flex items-center gap-1 text-[10px] text-slate-400">
-                        <Calendar className="w-3 h-3 text-[#D22027]" />
-                        <span>Today</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <h4 className="text-lg font-black text-[#111111] leading-tight mb-2 line-clamp-2">
-                    {title || "Untitled Article"}
-                  </h4>
-
-                  <p className="text-gray-500 text-xs leading-relaxed mb-5 line-clamp-3">
-                    {summary || "Your article subtitle will appear here, giving customers an overview of the topic before opening."}
-                  </p>
-
-                  <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#D22027]">BUILDMART INSIGHTS</span>
-                    <span className="text-[#D22027] font-black text-xs flex items-center gap-1">
-                      Read Post <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
+                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-[11px] font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode("feed")}
+                    className={`px-2.5 py-1 rounded-lg transition-colors ${
+                      previewMode === "feed" 
+                        ? "bg-white text-slate-900 shadow-sm" 
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    Blog Card
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode("google")}
+                    className={`px-2.5 py-1 rounded-lg transition-colors ${
+                      previewMode === "google" 
+                        ? "bg-white text-slate-900 shadow-sm" 
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    Google
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode("social")}
+                    className={`px-2.5 py-1 rounded-lg transition-colors ${
+                      previewMode === "social" 
+                        ? "bg-white text-slate-900 shadow-sm" 
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    Social
+                  </button>
                 </div>
               </div>
 
-              {!imageUrl && (
-                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>No image attached. The card adapts cleanly without any blank image space.</span>
+              {/* 1. FEED CARD PREVIEW */}
+              {previewMode === "feed" && (
+                <div className="space-y-3">
+                  <p className="text-xs text-slate-500">
+                    Live look on your main website feed (<code className="text-slate-700 font-semibold">/blog</code>):
+                  </p>
+                  <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 flex flex-col transition-all">
+                    {imageUrl ? (
+                      <div className="h-48 overflow-hidden relative bg-slate-100">
+                        <img 
+                          src={imageUrl} 
+                          alt="Preview" 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm rounded-lg px-2.5 py-1 flex items-center gap-1.5 shadow-sm text-[10px] font-bold text-slate-800">
+                          <Calendar className="w-3 h-3 text-[#D22027]" />
+                          <span>Today</span>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div className="p-6 flex flex-col flex-1">
+                      <div className="flex items-center justify-between text-xs text-gray-500 font-bold mb-3 uppercase tracking-wider">
+                        <div className="flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-gray-400" />
+                          <span>{author || "Lali's Buildmart Admin"}</span>
+                        </div>
+                        {!imageUrl && (
+                          <div className="flex items-center gap-1 text-[10px] text-slate-400">
+                            <Calendar className="w-3 h-3 text-[#D22027]" />
+                            <span>Today</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <h4 className="text-lg font-black text-[#111111] leading-tight mb-2 line-clamp-2">
+                        {title || "Untitled Article"}
+                      </h4>
+
+                      <p className="text-gray-500 text-xs leading-relaxed mb-5 line-clamp-3">
+                        {summary || "Your article subtitle will appear here, giving customers an overview before opening."}
+                      </p>
+
+                      <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#D22027]">BUILDMART INSIGHTS</span>
+                        <span className="text-[#D22027] font-black text-xs flex items-center gap-1">
+                          Read Post <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {!imageUrl && (
+                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600 flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>No image attached. The card adapts cleanly without empty space.</span>
+                    </div>
+                  )}
                 </div>
               )}
+
+              {/* 2. GOOGLE SEARCH SNIPPET PREVIEW */}
+              {previewMode === "google" && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-slate-500">
+                      How Google presents your post to searchers:
+                    </p>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                      Google SERP
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1 font-sans">
+                    {/* Google URL line with favicon */}
+                    <div className="flex items-center gap-2 text-xs text-slate-600">
+                      <div className="w-4 h-4 rounded-full bg-[#D22027] flex items-center justify-center text-[9px] font-black text-white">
+                        L
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[11px] font-medium text-slate-800">Lali's Buildmart</span>
+                        <span className="text-[10px] text-slate-400">https://lalisbuildmart.com › blog › {editingId || "post"}</span>
+                      </div>
+                    </div>
+
+                    {/* Google Blue Link Title */}
+                    <div className="pt-1">
+                      <h4 className="text-[#1a0dab] hover:underline text-base font-semibold leading-snug cursor-pointer line-clamp-1">
+                        {activeMetaTitle}
+                      </h4>
+                    </div>
+
+                    {/* Google Snippet text */}
+                    <p className="text-xs text-slate-600 leading-relaxed line-clamp-2 pt-0.5">
+                      {activeMetaDescription}
+                    </p>
+                  </div>
+
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11px] text-blue-900 space-y-1">
+                    <div className="font-bold flex items-center gap-1.5">
+                      <Globe className="w-3.5 h-3.5 text-blue-600" /> SEO Recommendation
+                    </div>
+                    <p className="text-blue-800">
+                      Keep your Meta Title under 60 characters and Meta Description under 160 characters so Google does not cut it off with "...".
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* 3. SOCIAL MEDIA / WHATSAPP / LINKEDIN SHARE PREVIEW */}
+              {previewMode === "social" && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-slate-500">
+                      OpenGraph preview on WhatsApp, Twitter & LinkedIn:
+                    </p>
+                    <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                      OpenGraph Card
+                    </span>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50 shadow-md">
+                    {imageUrl ? (
+                      <img 
+                        src={imageUrl} 
+                        alt="Social preview" 
+                        className="w-full h-44 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-28 bg-slate-200 flex flex-col items-center justify-center text-slate-400 text-xs">
+                        <Share2 className="w-6 h-6 mb-1 opacity-50" />
+                        <span>No image (Text preview card)</span>
+                      </div>
+                    )}
+                    <div className="p-4 bg-white border-t border-slate-100">
+                      <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                        lalisbuildmart.com
+                      </div>
+                      <div className="font-bold text-slate-900 text-sm mt-0.5 line-clamp-1">
+                        {activeMetaTitle}
+                      </div>
+                      <div className="text-xs text-slate-500 mt-1 line-clamp-2">
+                        {activeMetaDescription}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
 
           </div>
