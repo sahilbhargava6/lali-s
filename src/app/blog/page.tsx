@@ -103,33 +103,50 @@ export default function BlogList() {
                 key={blog.id} 
                 className="group bg-white rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex flex-col h-full hover:shadow-2xl hover:shadow-red-900/5 transition-all duration-300"
               >
-                {/* Image */}
-                <div className="h-48 sm:h-56 overflow-hidden relative bg-slate-200">
-                  <img 
-                    src={blog.image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"} 
-                    alt={blog.title} 
-                    className="w-full h-full object-cover transition-transform duration-750 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  
-                  {/* Category / Date Tag */}
-                  <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-1 flex items-center gap-1.5 shadow-sm text-[11px] font-bold text-slate-800">
-                    <Calendar className="w-3.5 h-3.5 text-[#D22027]" />
-                    <span>
-                      {new Date(blog.created_at).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </span>
+                {/* Image Section - Only rendered if an image is provided */}
+                {blog.image_url ? (
+                  <div className="h-48 sm:h-56 overflow-hidden relative bg-slate-100">
+                    <img 
+                      src={blog.image_url} 
+                      alt={blog.title} 
+                      className="w-full h-full object-cover transition-transform duration-750 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    
+                    {/* Category / Date Tag */}
+                    <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-1 flex items-center gap-1.5 shadow-sm text-[11px] font-bold text-slate-800">
+                      <Calendar className="w-3.5 h-3.5 text-[#D22027]" />
+                      <span>
+                        {new Date(blog.created_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* Content */}
                 <div className="p-6 md:p-8 flex flex-col flex-1">
-                  <div className="flex items-center gap-1.5 text-xs text-gray-500 font-bold mb-3 uppercase tracking-wider">
-                    <User className="w-3.5 h-3.5 text-gray-400" />
-                    <span>{blog.author || "Lali's Buildmart Admin"}</span>
+                  <div className="flex items-center justify-between text-xs text-gray-500 font-bold mb-3 uppercase tracking-wider">
+                    <div className="flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-gray-400" />
+                      <span>{blog.author || "Lali's Buildmart Admin"}</span>
+                    </div>
+                    {/* If no image, show date here in the header */}
+                    {!blog.image_url && (
+                      <div className="flex items-center gap-1.5 text-slate-400 text-[11px]">
+                        <Calendar className="w-3.5 h-3.5 text-[#D22027]" />
+                        <span>
+                          {new Date(blog.created_at).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <h3 className="text-xl md:text-2xl font-black text-[#111111] leading-tight mb-3 group-hover:text-[#D22027] transition-colors line-clamp-2">

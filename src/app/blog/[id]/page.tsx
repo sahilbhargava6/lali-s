@@ -94,15 +94,17 @@ export default function BlogDetail({ params }: PageProps) {
         {/* Hero Card */}
         <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100">
           
-          {/* Header Image */}
-          <div className="h-56 sm:h-[300px] md:h-[450px] w-full relative bg-slate-200">
-            <img 
-              src={blog.image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"} 
-              alt={blog.title} 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          </div>
+          {/* Header Image - Only rendered if an image exists */}
+          {blog.image_url ? (
+            <div className="h-56 sm:h-[300px] md:h-[450px] w-full relative bg-slate-100">
+              <img 
+                src={blog.image_url} 
+                alt={blog.title} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            </div>
+          ) : null}
 
           {/* Meta & Title */}
           <div className="px-5 py-6 sm:px-8 sm:py-8 md:p-12 border-b border-slate-100">
