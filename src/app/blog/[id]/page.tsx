@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { supabase } from '@/lib/supabase';
 import { ArrowLeft, Calendar, User, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import ArticleContent from '@/components/ArticleContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -152,9 +153,7 @@ export default async function BlogDetail({ params }: PageProps) {
 
           {/* Main Body Content */}
           <div className="px-5 py-8 sm:px-8 sm:py-10 md:p-12">
-            <div className="text-slate-700 text-base md:text-lg leading-relaxed whitespace-pre-line break-words font-sans space-y-6">
-              {blog.content}
-            </div>
+            <ArticleContent content={blog.content} />
           </div>
 
           {/* Footer Call to Action */}

@@ -6,9 +6,11 @@ import {
   Plus, Edit, Trash2, Eye, LayoutDashboard, FileText, CheckCircle2, 
   AlertCircle, Lock, KeyRound, Loader2, ArrowLeft, RefreshCw, 
   Sparkles, Image as ImageIcon, Upload, X, ExternalLink, Search,
-  Calendar, User, ArrowRight, Globe, Share2, Tag, ChevronDown, ChevronUp
+  Calendar, User, ArrowRight, Globe, Share2, Tag, ChevronDown, ChevronUp,
+  Bold, Italic, Underline, Heading2, Heading3, List, ListOrdered, Quote, Link2, Minus, Edit3
 } from "lucide-react";
 import Link from "next/link";
+import ArticleContent from "@/components/ArticleContent";
 
 interface Blog {
   id: string;
@@ -59,6 +61,40 @@ export default function Dashboard() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Content Editor formatting state & ref
+  const [contentTab, setContentTab] = useState<"write" | "preview">("write");
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertFormatting = (prefix: string, suffix: string = "", placeholder: string = "") => {
+    setContentTab("write");
+    const textarea = contentTextareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentVal = textarea.value;
+    const selectedText = currentVal.substring(start, end);
+
+    const textToInsert = selectedText || placeholder;
+    const newContent = 
+      currentVal.substring(0, start) + 
+      prefix + textToInsert + suffix + 
+      currentVal.substring(end);
+
+    setContent(newContent);
+
+    setTimeout(() => {
+      textarea.focus();
+      if (selectedText) {
+        textarea.setSelectionRange(start, start + prefix.length + textToInsert.length + suffix.length);
+      } else {
+        const newStart = start + prefix.length;
+        const newEnd = newStart + textToInsert.length;
+        textarea.setSelectionRange(newStart, newEnd);
+      }
+    }, 15);
+  };
 
   const adminPasscode = process.env.NEXT_PUBLIC_ADMIN_PASSCODE || "lali123";
 
@@ -119,6 +155,7 @@ export default function Dashboard() {
     setMetaTitle("");
     setMetaDescription("");
     setMetaKeywords("");
+    setContentTab("write");
     setShowUrlInput(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -835,22 +872,182 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {/* Content */}
+                {/* Rich Content Editor */}
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between mb-2">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
                       Article Content <span className="text-[#D22027]">*</span>
                     </label>
-                    <span className="text-[11px] text-slate-400">Supports standard paragraphs & line breaks</span>
+                    
+                    {/* Write / Preview Tab Switcher */}
+                    <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setContentTab("write")}
+                        className={`px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 ${
+                          contentTab === "write"
+                            ? "bg-white text-slate-900 shadow-sm"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Write</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setContentTab("preview")}
+                        className={`px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 ${
+                          contentTab === "preview"
+                            ? "bg-white text-slate-900 shadow-sm"
+                            : "text-slate-500 hover:text-slate-800"
+                        }`}
+                      >
+                        <Eye className="w-3.5 h-3.5 text-[#D22027]" />
+                        <span>Preview Formatted</span>
+                      </button>
+                    </div>
                   </div>
-                  <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="Write your article here. Use blank lines between paragraphs for clean reading..."
-                    rows={12}
-                    className="w-full bg-slate-50 border border-slate-300 focus:border-[#D22027] focus:bg-white rounded-2xl p-4 text-slate-900 text-sm focus:outline-none leading-relaxed transition-all shadow-sm resize-y"
-                    required
-                  ></textarea>
+
+                  {/* Formatting Toolbar (Sticky top of editor) */}
+                  <div className="border border-slate-300 rounded-2xl overflow-hidden focus-within:border-[#D22027] focus-within:ring-1 focus-within:ring-[#D22027] transition-all bg-white shadow-sm">
+                    <div className="bg-slate-50 border-b border-slate-200 p-2 flex flex-wrap items-center gap-1">
+                      {/* Bold */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("**", "**", "bold text")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-bold text-xs"
+                        title="Bold (**text**)"
+                      >
+                        <Bold className="w-4 h-4" />
+                      </button>
+
+                      {/* Italic */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("*", "*", "italic text")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs italic"
+                        title="Italic (*text*)"
+                      >
+                        <Italic className="w-4 h-4" />
+                      </button>
+
+                      {/* Underline */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("<u>", "</u>", "underlined text")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Underline (<u>text</u>)"
+                      >
+                        <Underline className="w-4 h-4" />
+                      </button>
+
+                      <div className="w-[1px] h-5 bg-slate-300 mx-1"></div>
+
+                      {/* Heading 2 */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n## ", "\n", "Heading 2")}
+                        className="px-2.5 py-1.5 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-extrabold text-xs flex items-center gap-0.5"
+                        title="Major Heading (## Heading)"
+                      >
+                        <Heading2 className="w-4 h-4" />
+                      </button>
+
+                      {/* Heading 3 */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n### ", "\n", "Subheading")}
+                        className="px-2.5 py-1.5 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-bold text-xs flex items-center gap-0.5"
+                        title="Subheading (### Subheading)"
+                      >
+                        <Heading3 className="w-4 h-4" />
+                      </button>
+
+                      {/* Blockquote / Highlight */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n> ", "\n", "Important takeaway or quote")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Quote / Callout (> Quote)"
+                      >
+                        <Quote className="w-4 h-4" />
+                      </button>
+
+                      <div className="w-[1px] h-5 bg-slate-300 mx-1"></div>
+
+                      {/* Bullet List */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n- ", "\n", "List item")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Bullet List (- Item)"
+                      >
+                        <List className="w-4 h-4" />
+                      </button>
+
+                      {/* Numbered List */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n1. ", "\n", "First item")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Numbered List (1. Item)"
+                      >
+                        <ListOrdered className="w-4 h-4" />
+                      </button>
+
+                      <div className="w-[1px] h-5 bg-slate-300 mx-1"></div>
+
+                      {/* Link */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("[", "](https://example.com)", "Link text")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Hyperlink ([Text](url))"
+                      >
+                        <Link2 className="w-4 h-4" />
+                      </button>
+
+                      {/* Divider */}
+                      <button
+                        type="button"
+                        onClick={() => insertFormatting("\n---\n", "", "")}
+                        className="p-2 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-xs"
+                        title="Horizontal Divider (---)"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+
+                      <span className="text-[11px] text-slate-400 ml-auto hidden sm:inline-block pr-2">
+                        Select text & click tool to format
+                      </span>
+                    </div>
+
+                    {/* Write mode: Textarea */}
+                    {contentTab === "write" ? (
+                      <textarea
+                        ref={contentTextareaRef}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Write your article here. Use the formatting toolbar above for Bold, Italic, Underline, Headings, Lists, Quotes, and Links..."
+                        rows={14}
+                        className="w-full p-4 text-slate-900 text-sm focus:outline-none leading-relaxed resize-y font-sans bg-transparent"
+                        required
+                      ></textarea>
+                    ) : (
+                      /* Preview mode: Formatted content */
+                      <div className="p-6 bg-slate-50/50 min-h-[300px] max-h-[480px] overflow-y-auto">
+                        {content.trim() ? (
+                          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <ArticleContent content={content} />
+                          </div>
+                        ) : (
+                          <div className="text-center py-16 text-slate-400 text-xs">
+                            No content written yet. Switch to "Write" mode and write your article!
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* ==================================================== */}
