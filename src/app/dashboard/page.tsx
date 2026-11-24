@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, describeSupabaseError } from "@/lib/supabase";
 import { 
   Plus, Edit, Trash2, Eye, LayoutDashboard, FileText, CheckCircle2, 
   AlertCircle, Lock, KeyRound, Loader2, ArrowLeft, RefreshCw, 
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import ArticleContent from "@/components/ArticleContent";
+import { login, logout, hasAdminSession, saveBlog, deleteBlog, uploadCoverImage, type ActionResult } from "./actions";
 
 interface Blog {
   id: string;
@@ -96,31 +97,51 @@ export default function Dashboard() {
     }, 15);
   };
 
-  const adminPasscode = process.env.NEXT_PUBLIC_ADMIN_PASSCODE || "lali123";
+  // The passcode is checked on the server, which sets an httpOnly session cookie
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Check auth on load
+  // Restore an existing server session on load
   useEffect(() => {
-    const isAuth = sessionStorage.getItem("admin_authenticated") === "true";
-    if (isAuth) {
-      setIsAuthenticated(true);
-      fetchBlogs();
-    }
+    hasAdminSession().then((ok) => {
+      if (ok) {
+        setIsAuthenticated(true);
+        fetchBlogs();
+      }
+    });
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === adminPasscode) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("admin_authenticated", "true");
-      fetchBlogs();
-    } else {
-      setAuthError("Incorrect passcode. Please verify and try again.");
+    setIsLoggingIn(true);
+    try {
+      const res = await login(passcode);
+      if (res.ok) {
+        setPasscode("");
+        setIsAuthenticated(true);
+        fetchBlogs();
+      } else {
+        setAuthError(res.error);
+      }
+    } catch {
+      setAuthError("Couldn't reach the server. Check your connection and try again.");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout().catch(() => {});
     setIsAuthenticated(false);
-    sessionStorage.removeItem("admin_authenticated");
+  };
+
+  // Shared handling for failed server actions; an expired session returns to the login screen
+  const handleActionError = (res: Extract<ActionResult<unknown>, { ok: false }>) => {
+    if (res.sessionExpired) {
+      setIsAuthenticated(false);
+      setAuthError(res.error);
+    } else {
+      showNotification("error", res.error);
+    }
   };
 
   const fetchBlogs = async () => {
@@ -134,7 +155,7 @@ export default function Dashboard() {
       if (error) throw error;
       setBlogs(data || []);
     } catch (err: any) {
-      showNotification("error", err.message || "Failed to load blogs.");
+      showNotification("error", describeSupabaseError(err, "Failed to load blogs."));
     } finally {
       setIsLoading(false);
     }
@@ -181,13 +202,13 @@ export default function Dashboard() {
     }
 
     try {
-      const { error } = await supabase.from("blogs").delete().eq("id", id);
-      if (error) throw error;
+      const res = await deleteBlog(id);
+      if (!res.ok) return handleActionError(res);
 
       showNotification("success", "Blog post deleted successfully.");
       setBlogs(blogs.filter(b => b.id !== id));
     } catch (err: any) {
-      showNotification("error", err.message || "Failed to delete post.");
+      showNotification("error", describeSupabaseError(err, "Failed to delete post."));
     }
   };
 
@@ -245,34 +266,22 @@ export default function Dashboard() {
     try {
       const compressedDataUrl = await compressImage(file);
 
-      // Attempt upload to Supabase storage if the 'blog-images' bucket is configured
-      try {
-        const res = await fetch(compressedDataUrl);
-        const blob = await res.blob();
-        const fileName = `blog-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.webp`;
+      // Upload through the server (which holds the storage write key)
+      const blob = await (await fetch(compressedDataUrl)).blob();
+      const formData = new FormData();
+      formData.append("file", new File([blob], "cover.webp", { type: "image/webp" }));
+      const res = await uploadCoverImage(formData);
 
-        const { data, error } = await supabase.storage
-          .from("blog-images")
-          .upload(fileName, blob, {
-            contentType: "image/webp",
-            upsert: true,
-          });
-
-        if (!error && data) {
-          const { data: publicUrlData } = supabase.storage
-            .from("blog-images")
-            .getPublicUrl(fileName);
-          setImageUrl(publicUrlData.publicUrl);
-          showNotification("success", "Cover image uploaded successfully!");
-          return;
-        }
-      } catch {
-        // Fallback to storing compressed data URL directly if bucket isn't enabled
+      if (res.ok && res.data) {
+        setImageUrl(res.data.url);
+        showNotification("success", "Cover image uploaded successfully!");
+      } else if (!res.ok && res.sessionExpired) {
+        handleActionError(res);
+      } else {
+        // Storage unavailable: keep the optimized image inline so the article can still be published
+        setImageUrl(compressedDataUrl);
+        showNotification("success", "Cover image attached (stored inline; image storage was unavailable).");
       }
-
-      // Seamless fallback: store optimized data URL
-      setImageUrl(compressedDataUrl);
-      showNotification("success", "Cover image attached successfully!");
     } catch (err: any) {
       showNotification("error", "Failed to process image: " + err.message);
     } finally {
@@ -293,68 +302,33 @@ export default function Dashboard() {
     }
 
     setIsSubmitting(true);
-    const blogData: any = {
-      title: title.trim(),
-      summary: summary.trim(),
-      content: content.trim(),
-      image_url: imageUrl.trim() || null,
-      author: author.trim() || "Lali's Buildmart Admin",
-      meta_title: metaTitle.trim() || null,
-      meta_description: metaDescription.trim() || null,
-      meta_keywords: metaKeywords.trim() || null,
-    };
-
     try {
-      let error: any = null;
+      // Saved on the server; it falls back to core fields if the SEO columns don't exist yet
+      const res = await saveBlog(
+        {
+          title,
+          summary,
+          content,
+          image_url: imageUrl,
+          author,
+          meta_title: metaTitle,
+          meta_description: metaDescription,
+          meta_keywords: metaKeywords,
+        },
+        editingId
+      );
+      if (!res.ok) return handleActionError(res);
 
-      if (editingId) {
-        const res = await supabase
-          .from("blogs")
-          .update(blogData)
-          .eq("id", editingId);
-        error = res.error;
-      } else {
-        const res = await supabase
-          .from("blogs")
-          .insert([blogData]);
-        error = res.error;
-      }
-
-      // If SEO columns are missing in Supabase, retry saving core post and alert admin
-      if (error && error.message && error.message.toLowerCase().includes("column")) {
-        console.warn("SEO columns missing in Supabase table. Falling back to core columns.", error);
-        const fallbackData = {
-          title: blogData.title,
-          summary: blogData.summary,
-          content: blogData.content,
-          image_url: blogData.image_url,
-          author: blogData.author,
-        };
-
-        const retryRes = editingId
-          ? await supabase.from("blogs").update(fallbackData).eq("id", editingId)
-          : await supabase.from("blogs").insert([fallbackData]);
-
-        if (retryRes.error) throw retryRes.error;
-
-        showNotification(
-          "success",
-          "Article saved! Notice: Run the 1-line SQL in Supabase SQL editor to enable SEO columns: ALTER TABLE blogs ADD COLUMN IF NOT EXISTS meta_title TEXT, ADD COLUMN IF NOT EXISTS meta_description TEXT, ADD COLUMN IF NOT EXISTS meta_keywords TEXT;"
-        );
-      } else if (error) {
-        throw error;
-      } else {
-        showNotification(
-          "success", 
-          editingId ? "Article & SEO metadata updated successfully!" : "New article published with SEO metadata!"
-        );
-      }
+      showNotification(
+        "success",
+        res.notice ?? (editingId ? "Article & SEO metadata updated successfully!" : "New article published with SEO metadata!")
+      );
 
       resetForm();
       setActiveTab("list");
       fetchBlogs();
     } catch (err: any) {
-      showNotification("error", err.message || "Failed to save blog post.");
+      showNotification("error", describeSupabaseError(err, "Failed to save blog post."));
     } finally {
       setIsSubmitting(false);
     }
@@ -424,9 +398,10 @@ export default function Dashboard() {
 
             <button
               type="submit"
-              className="w-full bg-[#D22027] hover:bg-[#b01920] text-white py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-red-600/20 hover:shadow-red-600/30 flex items-center justify-center gap-2"
+              disabled={isLoggingIn}
+              className="w-full bg-[#D22027] hover:bg-[#b01920] disabled:opacity-70 disabled:cursor-wait text-white py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-red-600/20 hover:shadow-red-600/30 flex items-center justify-center gap-2"
             >
-              Access Blog Studio
+              {isLoggingIn ? <><Loader2 className="w-4 h-4 animate-spin" /> Checking...</> : "Access Blog Studio"}
             </button>
           </form>
           

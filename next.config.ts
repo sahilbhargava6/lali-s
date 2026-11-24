@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: {
+      // Blog Studio sends article text and (as a fallback) an inline cover image to server actions
+      bodySizeLimit: "4mb",
+    },
+  },
 };
 
 export default nextConfig;

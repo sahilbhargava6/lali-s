@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, describeSupabaseError } from "@/lib/supabase";
 import { Calendar, User, Search, BookOpen, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -21,6 +21,8 @@ export default function BlogList() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     async function fetchBlogs() {
@@ -33,13 +35,20 @@ export default function BlogList() {
         if (error) throw error;
         setBlogs(data || []);
       } catch (err) {
-        console.error("Failed to load blog posts:", err);
+        console.error("Failed to load blog posts:", describeSupabaseError(err), err);
+        setLoadFailed(true);
       } finally {
         setIsLoading(false);
       }
     }
     fetchBlogs();
-  }, []);
+  }, [reloadKey]);
+
+  const retry = () => {
+    setIsLoading(true);
+    setLoadFailed(false);
+    setReloadKey((k) => k + 1);
+  };
 
   const filteredBlogs = blogs.filter(
     (blog) =>
@@ -87,12 +96,28 @@ export default function BlogList() {
             <Loader2 className="w-10 h-10 animate-spin text-[#D22027] mb-4" />
             <span className="font-bold text-sm">Loading articles...</span>
           </div>
+        ) : loadFailed ? (
+          <div className="text-center py-16 bg-white border border-slate-100 rounded-3xl p-8 max-w-lg mx-auto shadow-md">
+            <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-[#111111] mb-2">{"Articles couldn't load"}</h3>
+            <p className="text-gray-500 text-sm mb-6">
+              {"We're having trouble loading our blog right now. Please try again in a moment."}
+            </p>
+            <button
+              onClick={retry}
+              className="bg-[#D22027] hover:bg-[#b01920] text-white px-6 py-3 rounded-full font-bold text-sm transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
         ) : filteredBlogs.length === 0 ? (
           <div className="text-center py-20 bg-white border border-slate-100 rounded-3xl p-8 max-w-lg mx-auto shadow-md">
             <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-[#111111] mb-2">No articles found</h3>
+            <h3 className="text-lg font-bold text-[#111111] mb-2">{searchQuery ? "No articles found" : "No articles yet"}</h3>
             <p className="text-gray-500 text-sm">
-              We couldn't find any blog posts matching your search query. Try searching for another keyword.
+              {searchQuery
+                ? "We couldn't find any blog posts matching your search query. Try searching for another keyword."
+                : "New construction guides and industry updates are coming soon. Check back shortly."}
             </p>
           </div>
         ) : (
